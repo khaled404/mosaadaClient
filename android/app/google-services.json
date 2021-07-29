@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "85542150431",
+    "project_id": "mosaadaclient",
+    "storage_bucket": "mosaadaclient.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85542150431:android:5541a629067a35a58a902a",
+        "android_client_info": {
+          "package_name": "com.mosaadaclient"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85542150431-4gop46oggaighp9n3dkean1kp1nidhc3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZFFX-RIopDtEKGvmcMlhU_YD2L3nKXpM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85542150431-4gop46oggaighp9n3dkean1kp1nidhc3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
