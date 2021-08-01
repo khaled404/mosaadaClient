@@ -9,16 +9,17 @@
  */
 
 import React, {useEffect} from 'react';
-import {I18nManager, StatusBar, Text, View} from 'react-native';
+import {I18nManager, NativeModules, StatusBar} from 'react-native';
 import FlashMessage from 'react-native-flash-message';
-import {Fonts, ScreenOptions} from './src/constants/styleConstants';
 import ar from './src/localization/ar';
 import en from './src/localization/en';
 import {initReactI18next} from 'react-i18next';
 import i18n from 'i18next';
 import messaging from '@react-native-firebase/messaging';
 import RNBootSplash from 'react-native-bootsplash';
-
+import Router from './src/Router';
+import {theme} from './src/constants/theme';
+import {ThemeProvider} from './src/constants/styled';
 const {isRTL} = I18nManager;
 
 i18n.use(initReactI18next).init({
@@ -61,31 +62,30 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    RNBootSplash.hide({fade: true}); // fade
+    RNBootSplash.hide({fade: true});
   }, []);
 
   return (
-    <View style={{backgroundColor: '#fff', flex: 1}}>
+    <ThemeProvider theme={theme}>
       <StatusBar
         translucent={true}
         backgroundColor={'transparent'}
         barStyle="dark-content"
       />
-
-      <Text>sd</Text>
+      <Router />
       <FlashMessage
         position="top"
         hideOnPress={true}
-        style={{paddingTop: ScreenOptions.StatusBarHeight}}
+        style={{paddingTop: NativeModules.StatusBarManager.HEIGHT}}
         titleStyle={{
-          fontFamily: Fonts.medium,
-          paddingTop: ScreenOptions.StatusBarHeight,
+          fontFamily: theme.fonts.medium,
+          paddingTop: NativeModules.StatusBarManager.HEIGHT,
         }}
         textStyle={{
-          fontFamily: Fonts.medium,
+          fontFamily: theme.fonts.medium,
         }}
       />
-    </View>
+    </ThemeProvider>
   );
 };
 
