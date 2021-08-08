@@ -8,11 +8,15 @@ declare module 'styled-components' {
     appPaddingVertical: number;
     appPaddingHorizontal: number;
     appBackground: string;
+    statusBarHeight: number;
     colors: {
       main: string;
       secondary: string;
       gray: string;
       text: string;
+      success: string;
+      warning: string;
+      grayMain: string;
     };
     fonts: {
       regular: string;

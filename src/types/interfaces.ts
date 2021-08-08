@@ -1,11 +1,32 @@
+import {TextInputProps, ViewStyle} from 'react-native';
+import {SvgProps} from 'react-native-svg';
+import {EImages} from './enums';
+
 export interface IButton {
-  style?: string;
+  style?: any;
   onPress?: () => void;
-  textStyle?: string;
+  textStyle?: any;
   title: string;
   isLoading?: boolean;
 }
 
+export interface IImage {
+  source: EImages;
+  style?: any;
+  resizeMode?: 'contain' | 'center' | 'cover' | 'stretch';
+}
+
+export interface ITextInput extends TextInputProps {
+  LeftContent?: (props?: SvgProps) => JSX.Element;
+  RightContent?: (props?: SvgProps) => JSX.Element;
+  containerStyle?: string;
+  inputstyle?: string;
+  errors?: any;
+  touched?: any;
+  name: string;
+  handleChange?: any;
+  handleBlur?: any;
+}
 export interface IQueryErorr {
   response: {
     data: any;
