@@ -39,7 +39,9 @@ export const ForgotPassword = styled.Text`
   text-decoration: underline;
 `;
 
-export const NextButton = styled.TouchableOpacity`
+export const NextButton = styled.TouchableOpacity.attrs(() => ({
+  activeOpacity: 0.7,
+}))`
   width: ${sPixel(120)};
   height: ${sPixel(120)};
   border-radius: 50px;
