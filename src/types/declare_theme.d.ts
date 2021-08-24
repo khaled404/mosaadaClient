@@ -4,11 +4,16 @@ import 'styled-components';
 // and extend them!
 declare module 'styled-components' {
   export interface DefaultTheme {
-    borderRadius: string;
     appPaddingVertical: number;
     appPaddingHorizontal: number;
     appBackground: string;
     statusBarHeight: number;
+    pixel: (arg: number) => string;
+    colorWithOpacity: (arg1: string, arg2: number) => String;
+    screenDimensions: {
+      width: Number;
+      height: Number;
+    };
     colors: {
       main: string;
       secondary: string;

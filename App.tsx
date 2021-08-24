@@ -9,7 +9,7 @@
  */
 
 import React, {useEffect} from 'react';
-import {I18nManager, NativeModules, StatusBar} from 'react-native';
+import {I18nManager, NativeModules, StatusBar, View} from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import ar from './src/localization/ar';
 import en from './src/localization/en';
@@ -20,8 +20,11 @@ import RNBootSplash from 'react-native-bootsplash';
 import Router from './src/Router';
 import {theme} from './src/constants/theme';
 import {ThemeProvider} from './src/constants/styled';
-const {isRTL} = I18nManager;
-
+const {isRTL, forceRTL, allowRTL} = I18nManager;
+if (!isRTL) {
+  forceRTL(true);
+  allowRTL(true);
+}
 i18n.use(initReactI18next).init({
   resources: {
     ar: {

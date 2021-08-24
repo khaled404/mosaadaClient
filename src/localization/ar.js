@@ -8,4 +8,13 @@ export default {
   Phone: 'رقم الهاتف',
   'National ID': 'الرقم القومى',
   'Front card image': 'صورة البطاقة الأمامية',
+  Welcome: 'أهلا بك',
+  'How can we help you?': 'كيف يمكننا مساعدتك؟',
+  Service: 'خدمة',
+  Winch: 'ونش',
+  Day: 'اليوم',
+  Time: 'الوقت',
+  Wallet: 'المحفظة',
+  EGP: 'ج.م',
+  'Payment Records': 'سجلات الدفع',
 };

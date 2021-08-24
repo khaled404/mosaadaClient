@@ -4,7 +4,7 @@
  * @param opacity decimal value
  * @returns new color with opacity
  */
-export default (hex: string, opacity: number) => {
+export default (hex: string, opacity: number): String => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   let color;
   if (result) {

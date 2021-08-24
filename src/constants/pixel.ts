@@ -35,12 +35,12 @@ const createPerfectPixel = (designSize = {width: 750, height: 1624}) => {
  * @returns Perfect pixel for current resolution
  */
 
-export const sPixel = (pixel: number) => {
+export const sPixel = (pixel: number): string => {
   const Perfect = createPerfectPixel(DesignResolution);
   return `${Perfect(pixel)}px`;
 };
 
-export const pixel = (pixel: number) => {
+export const pixel = (pixel: number): number => {
   const Perfect = createPerfectPixel(DesignResolution);
   return Perfect(pixel);
 };
