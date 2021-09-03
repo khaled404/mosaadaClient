@@ -11,7 +11,8 @@ export interface IButton {
 }
 
 export interface IImage {
-  source: EImages;
+  source?: EImages;
+  url?: any;
   style?: any;
   resizeMode?: 'contain' | 'center' | 'cover' | 'stretch';
 }

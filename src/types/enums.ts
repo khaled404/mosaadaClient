@@ -6,6 +6,7 @@ export enum AsyncKeys {
 
 export enum EImages {
   Logo = require(PATH + 'logo.png'),
+  logoSm = require(PATH + 'logo-sm.png'),
   avatar = require(PATH + 'avatar.png'),
   banner = require(PATH + 'banner.png'),
   services = require(PATH + 'services.png'),

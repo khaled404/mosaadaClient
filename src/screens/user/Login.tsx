@@ -7,21 +7,24 @@ import {
   ForgotPassword,
   ForgotPasswordContainer,
   LogoContainer,
-  NextButton,
   RegisterContainer,
   RegisterText,
   RegisterTextTow,
   Title,
 } from './style';
 import Image from '../../components/image/Image';
-import {EImages} from '../../types/enums';
+import {AsyncKeys, EImages} from '../../types/enums';
 import {useTranslation} from 'react-i18next';
 import Input from '../../components/Form/Input';
 import Mail from '../../../assets/svg/Mail';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import Lock from '../../../assets/svg/Lock';
-import ArrowLeft from '../../../assets/svg/ArrowLeft';
+import {useMutation} from 'react-query';
+import {LoginHandler} from './api';
+import NextArrowButton from './components/NextArrowButton';
+import {showMessage} from 'react-native-flash-message';
+import {saveItem} from '../../constants/helpers';
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
   password: Yup.string()
@@ -31,13 +34,24 @@ const LoginSchema = Yup.object().shape({
 });
 
 const Login: FC = () => {
-  const {navigate} = useNavigation();
+  const {reset, navigate} = useNavigation();
   const {t} = useTranslation();
+  const {mutate, isLoading, data} = useMutation(LoginHandler, {
+    onError: (error: any) => {
+      showMessage({
+        message: error?.response?.data?.message,
+        type: 'danger',
+      });
+    },
+    onSuccess: async data => {
+      await saveItem(AsyncKeys.USER_DATA, data.data);
+      reset({index: 1, routes: [{name: 'Home'}]});
+    },
+  });
   const {handleChange, handleSubmit, handleBlur, values, errors} = useFormik({
     initialValues: {email: '', password: ''},
     validationSchema: LoginSchema,
-    onSubmit: values =>
-      console.log(`Email: ${values.email}, Password: ${values.password}`),
+    onSubmit: values => mutate(values),
   });
 
   return (
@@ -55,7 +69,7 @@ const Login: FC = () => {
         <Title>{t('Please enter the following data')}</Title>
         <Input
           placeholder={t('Email')}
-          LeftContent={Mail}
+          LeftContent={Mail as any}
           errors={errors}
           name="email"
           handleChange={handleChange}
@@ -63,21 +77,18 @@ const Login: FC = () => {
         />
         <Input
           placeholder={t('Password')}
-          LeftContent={Lock}
+          LeftContent={Lock as any}
           errors={errors}
           name="password"
           handleChange={handleChange}
           handleBlur={handleBlur}
-          secureTextEntry
+          secureTextEntry={values.password.length >= 1}
           onSubmitEditing={handleSubmit}
         />
         <ForgotPasswordContainer>
           <ForgotPassword>{t('Forgot Password')}</ForgotPassword>
         </ForgotPasswordContainer>
-
-        <NextButton>
-          <ArrowLeft />
-        </NextButton>
+        <NextArrowButton isLoading={isLoading} onPress={handleSubmit} />
       </Content>
       <RegisterContainer
         onPress={() => {

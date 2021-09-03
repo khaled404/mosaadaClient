@@ -12,7 +12,7 @@ export const Title = styled.Text`
   width: 100%;
   text-align: center;
   color: ${props => props.theme.colors.main};
-  font-family: ${props => props.theme.fonts.medium};
+  font-family: ${props => props.theme.fonts.regular};
   margin-top: ${sPixel(93)};
   font-size: ${sPixel(25)};
   margin-bottom: ${sPixel(120)};
@@ -39,21 +39,6 @@ export const ForgotPassword = styled.Text`
   text-decoration: underline;
 `;
 
-export const NextButton = styled.TouchableOpacity.attrs(() => ({
-  activeOpacity: 0.7,
-}))`
-  width: ${sPixel(120)};
-  height: ${sPixel(120)};
-  border-radius: 50px;
-  background-color: ${props => props.theme.colors.main};
-  align-items: center;
-  justify-content: center;
-  margin: auto auto 0;
-  position: absolute;
-  bottom: -${sPixel(40)};
-  left: 45%;
-`;
-
 export const RegisterContainer = styled.TouchableOpacity`
   margin: auto auto 0;
   flex-direction: row;
@@ -71,4 +56,19 @@ export const RegisterTextTow = styled.Text`
   color: ${props => props.theme.colors.main};
   font-family: ${props => props.theme.fonts.bold};
   font-size: ${sPixel(25)};
+`;
+
+export const NextButton = styled.TouchableOpacity.attrs(() => ({
+  activeOpacity: 0.7,
+}))`
+  width: ${sPixel(120)};
+  height: ${sPixel(120)};
+  border-radius: 50px;
+  background-color: ${props => props.theme.colors.main};
+  align-items: center;
+  justify-content: center;
+  margin: auto auto 0;
+  position: absolute;
+  bottom: -${sPixel(40)};
+  left: 45%;
 `;

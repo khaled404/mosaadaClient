@@ -11,17 +11,22 @@ import Mail from '../../../assets/svg/Mail';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import ArrowLeft from '../../../assets/svg/ArrowLeft';
+import Lock from '../../../assets/svg/Lock';
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
+  password: Yup.string().min(6).required('Required'),
+  passwordConfirmation: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'كلمة المرور غير متشابهة')
+    .required('Required'),
 });
 
 const RegisterStep1: FC = () => {
   const {navigate} = useNavigation();
   const {t} = useTranslation();
   const {handleChange, handleSubmit, handleBlur, values, errors} = useFormik({
-    initialValues: {email: ''},
+    initialValues: {email: '', password: '', passwordConfirmation: ''},
     validationSchema: LoginSchema,
-    onSubmit: values => console.log(`Email: ${values.email},  `),
+    onSubmit: values => navigate('RegisterStep2', values),
   });
 
   return (
@@ -39,18 +44,35 @@ const RegisterStep1: FC = () => {
         <Title>{t('Please enter the following data')}</Title>
         <Input
           placeholder={t('Email')}
-          LeftContent={Mail}
+          LeftContent={Mail as any}
           errors={errors}
           name="email"
           handleChange={handleChange}
           handleBlur={handleBlur}
           onSubmitEditing={handleSubmit}
         />
+        <Input
+          placeholder={t('Password')}
+          LeftContent={Lock as any}
+          errors={errors}
+          name="password"
+          handleChange={handleChange}
+          handleBlur={handleBlur}
+          secureTextEntry={values.password.length >= 1}
+          onSubmitEditing={handleSubmit}
+        />
+        <Input
+          placeholder={t('Password Confirmation')}
+          LeftContent={Lock as any}
+          errors={errors}
+          name="passwordConfirmation"
+          handleChange={handleChange}
+          handleBlur={handleBlur}
+          secureTextEntry={values.passwordConfirmation.length >= 1}
+          onSubmitEditing={handleSubmit}
+        />
 
-        <NextButton
-          onPress={() => {
-            navigate('RegisterStep2');
-          }}>
+        <NextButton onPress={handleSubmit}>
           <ArrowLeft />
         </NextButton>
       </Content>

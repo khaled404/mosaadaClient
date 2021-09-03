@@ -36,8 +36,10 @@ const Tabs = () => (
   </Tab.Navigator>
 );
 
-const Stacks: FC = () => (
-  <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="Home">
+const Stacks: FC<{isLogin: boolean}> = ({isLogin}) => (
+  <Stack.Navigator
+    screenOptions={{headerShown: false}}
+    initialRouteName={isLogin ? 'Home' : 'Login'}>
     <Stack.Screen name="Home" component={Tabs} />
     <Stack.Screen name="Login" component={Login} />
     <Stack.Screen name="RegisterStep1" component={RegisterStep1} />
@@ -47,8 +49,8 @@ const Stacks: FC = () => (
   </Stack.Navigator>
 );
 
-export default () => (
+export default ({isLogin}: any) => (
   <NavigationContainer>
-    <Stacks />
+    <Stacks isLogin={isLogin} />
   </NavigationContainer>
 );

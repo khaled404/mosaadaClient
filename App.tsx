@@ -8,8 +8,8 @@
  * @format
  */
 
-import React, {useEffect} from 'react';
-import {I18nManager, NativeModules, StatusBar, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {I18nManager, StatusBar, View} from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import ar from './src/localization/ar';
 import en from './src/localization/en';
@@ -20,6 +20,8 @@ import RNBootSplash from 'react-native-bootsplash';
 import Router from './src/Router';
 import {theme} from './src/constants/theme';
 import {ThemeProvider} from './src/constants/styled';
+import {getItem} from './src/constants/helpers';
+import {AsyncKeys} from './src/types/enums';
 const {isRTL, forceRTL, allowRTL} = I18nManager;
 if (!isRTL) {
   forceRTL(true);
@@ -52,6 +54,7 @@ const App = () => {
       console.log('Authorization status:', authStatus);
     }
   }
+  const [isLogin, setIsLogin] = useState<any>(null);
 
   useEffect(() => {
     requestUserPermission();
@@ -64,10 +67,25 @@ const App = () => {
       });
   }, []);
 
+  const checkIsLogin = async () => {
+    const data = await getItem(AsyncKeys.USER_DATA);
+    if (data !== null || data !== undefined) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
+  };
   useEffect(() => {
-    RNBootSplash.hide({fade: true});
+    checkIsLogin();
   }, []);
-
+  useEffect(() => {
+    if (isLogin !== null) {
+      setTimeout(() => {
+        RNBootSplash.hide({fade: true});
+      }, 200);
+    }
+  }, [isLogin]);
+  if (isLogin === null) return <View></View>;
   return (
     <ThemeProvider theme={theme}>
       <StatusBar
@@ -75,14 +93,14 @@ const App = () => {
         backgroundColor={'transparent'}
         barStyle="dark-content"
       />
-      <Router />
+      <Router isLogin={isLogin} />
       <FlashMessage
         position="top"
         hideOnPress={true}
-        style={{paddingTop: NativeModules.StatusBarManager.HEIGHT}}
+        floating
+        style={{top: 25}}
         titleStyle={{
           fontFamily: theme.fonts.medium,
-          paddingTop: NativeModules.StatusBarManager.HEIGHT,
         }}
         textStyle={{
           fontFamily: theme.fonts.medium,

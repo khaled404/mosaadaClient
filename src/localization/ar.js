@@ -2,6 +2,7 @@ export default {
   'Please enter the following data': 'من فضلك ادخل البيانات التالية',
   Email: 'البريد الإلكتروني',
   'Forgot Password': 'نسيت كلمة المرور',
+  Password: 'كلمة المرور',
   "Don't have an account?": 'ليس لديك حساب؟',
   'Create an account': 'أنشئ حساب',
   'The name on the card': 'الإسم علي البطاقة',
@@ -17,4 +18,10 @@ export default {
   Wallet: 'المحفظة',
   EGP: 'ج.م',
   'Payment Records': 'سجلات الدفع',
+  'My Orders': 'سجل طلباتى',
+  'Starting Location': 'موقع الإقلاع',
+  'Arrival Location': 'موقع الوصول',
+  'Finished Service': 'خدمة منتهية',
+  Address: 'العناوين',
+  'Password Confirmation': 'تأكيد كلمة المرور',
 };

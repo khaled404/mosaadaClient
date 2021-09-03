@@ -20,7 +20,7 @@ export const theme: DefaultTheme = {
     secondary: '#ffffff',
     gray: '#f7f7fa',
     text: '#b4b4d5',
-    success: '#21BF46',
+    success: '#27ae60',
     warning: '#FE586A',
   },
   fonts: {

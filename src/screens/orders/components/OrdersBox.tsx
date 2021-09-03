@@ -4,11 +4,13 @@ import {View} from 'react-native';
 import styled, {css} from 'styled-components/native';
 import CalendarSm from '../../../../assets/svg/CalendarSm';
 import ClockSm from '../../../../assets/svg/ClockSm';
+import SuccessIcon from '../../../../assets/svg/SuccessIcon';
+import MapPin from '../../../../assets/svg/MapPin';
 import Image from '../../../components/image/Image';
 import {theme} from '../../../constants/theme';
 import {EImages} from '../../../types/enums';
 
-const RecordBox = () => {
+const OrdersBox = () => {
   const {t} = useTranslation();
   return (
     <Container>
@@ -40,8 +42,23 @@ const RecordBox = () => {
             <DateText>10:30 م</DateText>
           </DateContainer>
         </View>
+        <View style={{flexDirection: 'row', paddingTop: 10}}>
+          <MapPin fill={theme.colors.main} />
+          <MapText>{t('Starting Location')}</MapText>
+          <LocationText>الموقع الحالي</LocationText>
+        </View>
+        <View style={{flexDirection: 'row', paddingTop: 10}}>
+          <MapPin fill={theme.colors.main} />
+          <MapText>{t('Arrival Location')}</MapText>
+          <LocationText>المنزل شارع الشفعى - ميت غمر</LocationText>
+        </View>
       </Left>
       <Right>
+        <StatusText>
+          <SuccessIcon />
+          <SuccessText>{t('Finished Service')}</SuccessText>
+        </StatusText>
+
         <Amount>50</Amount>
         <Currency>{t('EGP')}</Currency>
       </Right>
@@ -49,7 +66,7 @@ const RecordBox = () => {
   );
 };
 
-export default RecordBox;
+export default OrdersBox;
 
 const Container = styled.TouchableOpacity`
   flex-direction: row;
@@ -57,6 +74,11 @@ const Container = styled.TouchableOpacity`
   margin-bottom: ${({theme}) => theme.pixel(40)};
   align-items: center;
   justify-content: space-between;
+  background-color: #fff;
+  border: solid 1px rgba(112, 112, 112, 0.08);
+  padding: ${({theme}) => theme.pixel(25)} 0 ${({theme}) => theme.pixel(20)}
+    ${({theme}) => theme.pixel(25)};
+  border-radius: 20px;
 `;
 const Left = styled.View`
   flex: 0.6;
@@ -100,7 +122,32 @@ const DateContainer = styled.View`
 `;
 const DateText = styled.Text(({theme}) => ({
   fontFamily: theme.fonts.bold,
+  color: theme.colors.grayMain,
+  fontSize: theme.pixel(17),
+  paddingEnd: 10,
+}));
+const MapText = styled.Text(({theme}) => ({
+  fontFamily: theme.fonts.bold,
   color: theme.colors.main,
   fontSize: theme.pixel(17),
   paddingEnd: 10,
+}));
+const LocationText = styled.Text(({theme}) => ({
+  fontFamily: theme.fonts.regular,
+  color: theme.colors.text,
+  fontSize: theme.pixel(17),
+  paddingEnd: 10,
+}));
+const StatusText = styled.View`
+  position: absolute;
+  top: ${({theme}) => theme.pixel(-65)};
+  right: ${({theme}) => theme.pixel(25)};
+  flex-direction: row;
+  align-items: center;
+`;
+const SuccessText = styled.Text(({theme}) => ({
+  color: theme.colors.success,
+  paddingEnd: theme.pixel(15),
+  fontFamily: theme.fonts.regular,
+  fontSize: theme.pixel(24),
 }));
