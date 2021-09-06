@@ -1,9 +1,17 @@
 import * as React from 'react';
+import {I18nManager} from 'react-native';
 import Svg, {SvgProps, Path} from 'react-native-svg';
 
 export default function (props: SvgProps) {
+  const {isRTL} = I18nManager;
   return (
-    <Svg width={15} height={15} {...props}>
+    <Svg
+      width={15}
+      height={15}
+      {...props}
+      style={{
+        transform: [{rotate: isRTL ? '0deg' : '180deg'}],
+      }}>
       <Path
         data-name="Path 1092"
         d="M0 0h15v15H0z"

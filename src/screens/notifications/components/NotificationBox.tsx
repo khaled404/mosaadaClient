@@ -43,6 +43,7 @@ const Text = styled.Text`
   width: 80%;
 
   padding: 0 ${({theme}) => theme.pixel(20)};
+  font-size: ${({theme}) => theme.pixel(20)};
   color: ${({theme}) => theme.colors.text};
   font-family: ${({theme}) => theme.fonts.regular};
 `;

@@ -22,7 +22,20 @@ export const RegisterHandler = async (body: any) => {
   return data;
 };
 
+export const ForgotPasswordHandler = async (body: any) => {
+  const {data} = await axios.post('forget-password', body);
+  return data;
+};
+
 export const GetUserHandler = async () => {
   const {data} = await axios.get('profile');
+  return data;
+};
+
+export const EditUserHandler = async (body: any) => {
+  const {data} = await axios.put('profile', {
+    ...body,
+    dev_token: getUniqueId(),
+  });
   return data;
 };

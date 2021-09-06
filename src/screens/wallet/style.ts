@@ -38,7 +38,7 @@ export const AddButton = styled.TouchableOpacity(({theme}) => ({
   borderRadius: 100,
   alignItems: 'center',
   justifyContent: 'center',
-  marginTop: theme.pixel(135),
+  marginTop: theme.mediaQuery(788, theme.pixel(100), theme.pixel(135), 'h'),
 }));
 
 export const PlusText = styled.Text(({theme}) => ({
@@ -49,7 +49,7 @@ export const PlusText = styled.Text(({theme}) => ({
 
 export const RecordsContainer = styled.View`
   background-color: #fff;
-  height: 48%;
+  height: ${({theme}) => theme.mediaQuery(788, '47%', '48%', 'h')};
   width: 90%;
   align-self: center;
   border: solid 1px rgba(112, 112, 112, 0.17);

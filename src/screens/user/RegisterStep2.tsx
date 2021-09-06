@@ -2,23 +2,20 @@ import React, {FC} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {css} from 'styled-components/native';
 import {Container} from '../../globalStyle';
-import {Content, LogoContainer, NextButton, Title} from './style';
+import {Content, LogoContainer, Title} from './style';
 import Image from '../../components/image/Image';
-import {AsyncKeys, EImages} from '../../types/enums';
+import {EImages} from '../../types/enums';
 import {useTranslation} from 'react-i18next';
 import Input from '../../components/Form/Input';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import ArrowLeft from '../../../assets/svg/ArrowLeft';
 import User from '../../../assets/svg/User';
 import Phone from '../../../assets/svg/Phone';
-import UserId from '../../../assets/svg/UserId';
-import AddIcon from '../../../assets/svg/AddIcon';
 import {useMutation} from 'react-query';
 import {RegisterHandler} from './api';
 import NextArrowButton from './components/NextArrowButton';
 import {showMessage} from 'react-native-flash-message';
-import {saveItem} from '../../constants/helpers';
+import {useAuth} from '../../context/auth';
 const RegisterSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, 'Too Short!')
@@ -38,7 +35,7 @@ const RegisterStep2: FC = () => {
   const {reset} = useNavigation();
   const {params} = useRoute();
   const {t} = useTranslation();
-
+  const {login} = useAuth();
   const {mutate, isLoading, data} = useMutation(RegisterHandler, {
     onError: (error: any) => {
       if (Object.keys(error?.response?.data.errors).length !== 0) {
@@ -54,8 +51,9 @@ const RegisterStep2: FC = () => {
       });
     },
     onSuccess: async data => {
-      await saveItem(AsyncKeys.USER_DATA, data.data);
-      reset({index: 1, routes: [{name: 'Home'}]});
+      login(data.data, () => {
+        reset({index: 1, routes: [{name: 'Home'}]});
+      });
     },
   });
 
@@ -116,12 +114,6 @@ const RegisterStep2: FC = () => {
           handleBlur={handleBlur}
         /> */}
         <NextArrowButton isLoading={isLoading} onPress={handleSubmit} />
-        {/* <NextButton
-          onPress={() => {
-            navigate('Home');
-          }}>
-          <ArrowLeft />
-        </NextButton> */}
       </Content>
     </Container>
   );

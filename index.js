@@ -9,14 +9,17 @@ import {name as appName} from './app.json';
 import 'react-native-gesture-handler';
 
 import {QueryClient, QueryClientProvider} from 'react-query';
+import {AuthProvider} from './src/context/auth';
 const queryClient = new QueryClient({
   defaultOptions: {queries: {cacheTime: 50000}},
 });
 
 const RNapp = () => (
-  <QueryClientProvider client={queryClient}>
-    <App />
-  </QueryClientProvider>
+  <AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
+  </AuthProvider>
 );
 
 AppRegistry.registerComponent(appName, () => RNapp);

@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/core';
 import React, {FC} from 'react';
 import styled, {css} from 'styled-components/native';
 import Image from '../../../components/image/Image';
@@ -6,8 +7,12 @@ interface IHeader {
   imageURL?: any;
 }
 const Header: FC<IHeader> = ({title, imageURL}) => {
+  const {navigate} = useNavigation();
   return (
-    <Container>
+    <Container
+      onPress={() => {
+        navigate('Profile');
+      }}>
       <ImageContainer>
         <Image style={image} url={imageURL} />
       </ImageContainer>
@@ -15,7 +20,7 @@ const Header: FC<IHeader> = ({title, imageURL}) => {
     </Container>
   );
 };
-const Container = styled.View`
+const Container = styled.TouchableOpacity`
   background-color: #fff;
   padding: ${props => props.theme.statusBarHeight + 50}px
     ${props => props.theme.appPaddingHorizontal}px

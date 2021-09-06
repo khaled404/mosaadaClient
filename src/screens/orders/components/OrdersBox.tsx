@@ -91,12 +91,12 @@ const Right = styled.View`
 `;
 const Amount = styled.Text(({theme}) => ({
   fontFamily: theme.fonts.bold,
-  fontSize: theme.pixel(85),
+  fontSize: theme.pixel(70),
   color: theme.colors.main,
 }));
 const Currency = styled.Text(({theme}) => ({
   fontFamily: theme.fonts.bold,
-  fontSize: theme.pixel(35),
+  fontSize: theme.pixel(30),
   color: theme.colors.main,
 }));
 const ServicesBox = styled.View`

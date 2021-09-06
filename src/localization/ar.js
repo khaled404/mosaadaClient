@@ -24,4 +24,13 @@ export default {
   'Finished Service': 'خدمة منتهية',
   Address: 'العناوين',
   'Password Confirmation': 'تأكيد كلمة المرور',
+  'Usage policy': 'سياسة الاستخدام',
+  'Contact us': 'إتصل بنا',
+  'About the app': 'عن التطبيق',
+  Language: 'لغة التطبيق',
+  'Share the app': 'شارك التطبيق',
+  Logout: 'تسجيل الخروج',
+  Name: 'الإسم',
+  'Personal data': 'البيانات الشخصية',
+  'Profile updated successfully': 'تم تحديث الملف الشخصي بنجاح',
 };

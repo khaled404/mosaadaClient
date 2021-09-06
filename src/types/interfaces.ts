@@ -27,6 +27,8 @@ export interface ITextInput extends TextInputProps {
   name: string;
   handleChange?: any;
   handleBlur?: any;
+  removeStyle?: boolean;
+  isEdit?: boolean;
 }
 export interface IQueryErorr {
   response: {

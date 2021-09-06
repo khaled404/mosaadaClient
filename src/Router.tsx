@@ -15,6 +15,8 @@ import Orders from './screens/orders/Orders';
 import Notifications from './screens/notifications/Notifications';
 import Settings from './screens/settings/Settings';
 import Services from './screens/services/Services';
+import {useAuth} from './context/auth';
+import ForgotPasswordScreen from './screens/user/ForgotPassword';
 
 enableScreens();
 const Stack = createStackNavigator();
@@ -36,21 +38,26 @@ const Tabs = () => (
   </Tab.Navigator>
 );
 
-const Stacks: FC<{isLogin: boolean}> = ({isLogin}) => (
-  <Stack.Navigator
-    screenOptions={{headerShown: false}}
-    initialRouteName={isLogin ? 'Home' : 'Login'}>
-    <Stack.Screen name="Home" component={Tabs} />
-    <Stack.Screen name="Login" component={Login} />
-    <Stack.Screen name="RegisterStep1" component={RegisterStep1} />
-    <Stack.Screen name="RegisterStep2" component={RegisterStep2} />
-    <Stack.Screen name="Profile" component={Profile} />
-    <Stack.Screen name="Services" component={Services} />
-  </Stack.Navigator>
-);
+const Stacks: FC = () => {
+  const {isLogin} = useAuth();
 
-export default ({isLogin}: any) => (
+  return (
+    <Stack.Navigator
+      screenOptions={{headerShown: false}}
+      initialRouteName={isLogin ? 'Profile' : 'Login'}>
+      <Stack.Screen name="Home" component={Tabs} />
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="RegisterStep1" component={RegisterStep1} />
+      <Stack.Screen name="RegisterStep2" component={RegisterStep2} />
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Services" component={Services} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+    </Stack.Navigator>
+  );
+};
+
+export default () => (
   <NavigationContainer>
-    <Stacks isLogin={isLogin} />
+    <Stacks />
   </NavigationContainer>
 );

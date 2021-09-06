@@ -12,10 +12,12 @@ const Input: FC<ITextInput> = props => {
     name,
     handleChange = () => {},
     handleBlur = () => {},
+    removeStyle = false,
+    isEdit = false,
   } = props;
 
   return (
-    <View>
+    <View removeStyle={removeStyle} isEdit={isEdit}>
       <IconContainer>
         <LeftContent
           fill={errors[name] ? theme.colors.warning : theme.colors.main}
@@ -38,13 +40,26 @@ const Input: FC<ITextInput> = props => {
 export default Input;
 
 const View = styled.View`
-  background-color: #f7f7fa;
+  ${({removeStyle}) =>
+    removeStyle
+      ? ''
+      : `
+  background-color:  #f7f7fa;
   width: 100%;
   border-radius: 100px;
   padding: ${sPixel(15)} 0;
   flex-direction: row;
   align-items: center;
   margin-bottom: ${sPixel(45)};
+`}
+
+  ${({isEdit, theme}) =>
+    isEdit
+      ? `
+      border-bottom-width:1px ;
+      border-bottom-color:${theme.colors.text} ;
+    `
+      : ''}
 `;
 const IconContainer = styled.View`
   padding: 0 ${sPixel(25)};

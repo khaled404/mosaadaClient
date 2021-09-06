@@ -20,8 +20,11 @@ import RNBootSplash from 'react-native-bootsplash';
 import Router from './src/Router';
 import {theme} from './src/constants/theme';
 import {ThemeProvider} from './src/constants/styled';
-import {getItem} from './src/constants/helpers';
+import {removeItem} from './src/constants/helpers';
 import {AsyncKeys} from './src/types/enums';
+import {useQuery} from 'react-query';
+import {GetUserHandler} from './src/screens/user/api';
+import {useAuth} from './src/context/auth';
 const {isRTL, forceRTL, allowRTL} = I18nManager;
 if (!isRTL) {
   forceRTL(true);
@@ -44,6 +47,7 @@ i18n.use(initReactI18next).init({
 });
 
 const App = () => {
+  const {setIsLogin, isLogin, login} = useAuth();
   async function requestUserPermission() {
     const authStatus = await messaging().requestPermission();
     const enabled =
@@ -54,7 +58,19 @@ const App = () => {
       console.log('Authorization status:', authStatus);
     }
   }
-  const [isLogin, setIsLogin] = useState<any>(null);
+
+  useQuery('userData', GetUserHandler, {
+    onError: async error => {
+      await removeItem(AsyncKeys.USER_DATA);
+      setIsLogin(false);
+    },
+    onSuccess: data => {
+      setIsLogin(true);
+      login(data.data);
+      console.log(data);
+    },
+    retry: false,
+  });
 
   useEffect(() => {
     requestUserPermission();
@@ -67,22 +83,9 @@ const App = () => {
       });
   }, []);
 
-  const checkIsLogin = async () => {
-    const data = await getItem(AsyncKeys.USER_DATA);
-    if (data !== null || data !== undefined) {
-      setIsLogin(true);
-    } else {
-      setIsLogin(false);
-    }
-  };
-  useEffect(() => {
-    checkIsLogin();
-  }, []);
   useEffect(() => {
     if (isLogin !== null) {
-      setTimeout(() => {
-        RNBootSplash.hide({fade: true});
-      }, 200);
+      RNBootSplash.hide({fade: true});
     }
   }, [isLogin]);
   if (isLogin === null) return <View></View>;
@@ -93,17 +96,17 @@ const App = () => {
         backgroundColor={'transparent'}
         barStyle="dark-content"
       />
-      <Router isLogin={isLogin} />
+      <Router />
       <FlashMessage
         position="top"
         hideOnPress={true}
         floating
         style={{top: 25}}
         titleStyle={{
-          fontFamily: theme.fonts.medium,
+          fontFamily: theme.fonts.regular,
         }}
         textStyle={{
-          fontFamily: theme.fonts.medium,
+          fontFamily: theme.fonts.regular,
         }}
       />
     </ThemeProvider>

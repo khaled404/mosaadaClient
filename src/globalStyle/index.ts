@@ -7,6 +7,7 @@ export const Container = styled.View`
   position: relative;
   ${(props: any) => props.style}
 ` as any;
+
 export const Content = styled.ScrollView.attrs((props: any) => ({
   contentContainerStyle: {
     paddingVertical: props.theme.appPaddingVertical,

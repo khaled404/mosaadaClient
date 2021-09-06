@@ -9,10 +9,19 @@ declare module 'styled-components' {
     appBackground: string;
     statusBarHeight: number;
     pixel: (arg: number) => string;
-    colorWithOpacity: (arg1: string, arg2: number) => String;
+    colorWithOpacity: (arg1: string, arg2: number) => string;
+    dir: (ar: any, en: any) => any;
+    left: string;
+    right: string;
+    mediaQuery: (
+      size: number,
+      smStyle: any,
+      originalStyle: any,
+      dimensions: 'w' | 'h',
+    ) => any;
     screenDimensions: {
-      width: Number;
-      height: Number;
+      width: number;
+      height: number;
     };
     colors: {
       main: string;
