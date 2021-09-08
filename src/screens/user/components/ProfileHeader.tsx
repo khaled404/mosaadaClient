@@ -39,6 +39,9 @@ const TouchableOpacity = styled.TouchableOpacity`
   position: absolute;
   top: ${({theme}) => theme.statusBarHeight + 10}px;
   right: ${({theme}) => theme.appPaddingHorizontal}px;
+  width: ${({theme}) => theme.pixel(80)};
+  height: ${({theme}) => theme.pixel(80)};
+  align-items: flex-end;
 `;
 const IconContainer = styled.View`
   position: absolute;

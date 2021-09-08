@@ -33,4 +33,13 @@ export default {
   Name: 'الإسم',
   'Personal data': 'البيانات الشخصية',
   'Profile updated successfully': 'تم تحديث الملف الشخصي بنجاح',
+  'New Password': 'كلمة المرور الجديدة',
+  'New Password Confirmation': 'تأكيد كلمة المرور الجديدة',
+  'Password has been modified successfully': 'تم تعديل كلمة المرور بنجاح',
+  'You can send a complaint or suggestion here':
+    'يمكنك إرسال شكوى او اقتراح هنا',
+  'Text of the complaint or suggestion': 'نص الشكوى او الاقتراح',
+  Send: 'إرسال',
+  'For direct contact': 'للتواصل المباشر',
+  'About us': 'عن التطبيق',
 };

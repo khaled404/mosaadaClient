@@ -1,6 +1,5 @@
 import {useNavigation} from '@react-navigation/core';
 import React, {FC} from 'react';
-import {TouchableOpacity} from 'react-native';
 import styled, {css} from 'styled-components/native';
 import ChevronLeft from '../../../assets/svg/ChevronLeft';
 import {sPixel} from '../../constants/pixel';
@@ -15,10 +14,8 @@ const Header: FC<IHeader> = ({title, imageURL}) => {
     <Container>
       <Right></Right>
       <Title>{title}</Title>
-      <Left>
-        <TouchableOpacity onPress={goBack}>
-          <ChevronLeft />
-        </TouchableOpacity>
+      <Left onPress={goBack}>
+        <ChevronLeft />
       </Left>
       <Image style={image} source={imageURL} />
     </Container>
@@ -46,7 +43,7 @@ const Title = styled.Text`
   font-size: ${sPixel(30)};
   position: relative;
 `;
-const Left = styled.View`
+const Left = styled.TouchableOpacity`
   width: 25%;
   align-items: flex-end;
 `;

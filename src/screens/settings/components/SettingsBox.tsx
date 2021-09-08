@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import {View} from 'react-native';
 import styled from 'styled-components/native';
+import {pixel} from '../../../constants/pixel';
 import {theme} from '../../../constants/theme';
 interface ISettingsBox {
   Icon: any;
@@ -14,7 +15,7 @@ const SettingsBox: FC<ISettingsBox> = ({Icon, title, onPress}) => {
       <Content>
         <View
           style={{width: 30, alignItems: 'center', justifyContent: 'center'}}>
-          <Icon fill={theme.colors.main} />
+          <Icon fill={theme.colors.main} width={pixel(40)} height={pixel(40)} />
         </View>
         <Title>{title}</Title>
       </Content>

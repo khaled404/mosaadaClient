@@ -19,7 +19,11 @@ const ServicesBox: FC<{isRow?: boolean; onPress?: () => void}> = ({
 
   return (
     <>
-      <ServicesContainer isRow={isRow} onPress={onPress}>
+      <ServicesContainer
+        isRow={isRow}
+        onPress={() => {
+          navigate('Services');
+        }}>
         <Image
           source={EImages.services}
           style={css`

@@ -39,3 +39,8 @@ export const EditUserHandler = async (body: any) => {
   });
   return data;
 };
+
+export const ChangePasswordHandler = async (body: any) => {
+  const {data} = await axios.post('forget-password', body);
+  return data;
+};

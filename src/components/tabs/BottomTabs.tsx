@@ -5,7 +5,7 @@ import Gear from '../../../assets/svg/Gear';
 import HomeIcon from '../../../assets/svg/HomeIcon';
 import ListIcon from '../../../assets/svg/ListIcon';
 import WalletIcon from '../../../assets/svg/WalletIcon';
-import {sPixel} from '../../constants/pixel';
+import {pixel, sPixel} from '../../constants/pixel';
 import {theme} from '../../constants/theme';
 
 const BottomTabs: FC<any> = props => {
@@ -19,7 +19,6 @@ const BottomTabs: FC<any> = props => {
     Orders: ListIcon,
     Notifications: Bill,
     Settings: Gear,
-    Services: Gear,
   };
   return (
     <TabsContainer>
@@ -27,7 +26,11 @@ const BottomTabs: FC<any> = props => {
         const Icon = Tabs[item.name];
         return (
           <TabContainer onPress={() => navigation.navigate(item.name)}>
-            <Icon fill={i === index ? theme.colors.main : '#b2b2bc'} />
+            <Icon
+              fill={i === index ? theme.colors.main : '#b2b2bc'}
+              width={pixel(40)}
+              height={pixel(40)}
+            />
           </TabContainer>
         );
       })}

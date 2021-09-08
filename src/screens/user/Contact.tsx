@@ -1,0 +1,130 @@
+import React from 'react';
+import {View} from 'react-native';
+import {Container, Content} from '../../globalStyle';
+import Header from '../../components/header/Header';
+import {useTranslation} from 'react-i18next';
+import styled, {css} from 'styled-components/native';
+import * as Yup from 'yup';
+import {useFormik} from 'formik';
+import Mail from '../../../assets/svg/Mail';
+import Input from '../../components/Form/Input';
+import User from '../../../assets/svg/User';
+import Phone from '../../../assets/svg/Phone';
+import ListIcon from '../../../assets/svg/ListIcon';
+import Button from '../../components/button/Button';
+import Gmail from '../../../assets/svg/Gmail';
+import {theme} from '../../constants/theme';
+import Whatsapp from '../../../assets/svg/Whatsapp';
+import Sms from '../../../assets/svg/Sms';
+const ContactSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email').required('Required'),
+});
+
+const Contact = () => {
+  const {t} = useTranslation();
+
+  const {handleChange, handleSubmit, handleBlur, values, errors} = useFormik({
+    initialValues: {email: '', phone: ''},
+    validationSchema: ContactSchema,
+    onSubmit: values => {
+      // mutate(values)
+    },
+  });
+  return (
+    <Container white>
+      <Header title={t('Contact us')} />
+      <Content>
+        <Title>{t('You can send a complaint or suggestion here')}</Title>
+        <View style={{marginTop: 20}}>
+          <Input
+            placeholder={t('The name on the card')}
+            LeftContent={User}
+            errors={errors}
+            name="name"
+            handleChange={handleChange}
+            handleBlur={handleBlur}
+          />
+          <Input
+            placeholder={t('Phone')}
+            LeftContent={Phone}
+            errors={errors}
+            name="phone"
+            keyboardType={'phone-pad'}
+            handleChange={handleChange}
+            handleBlur={handleBlur}
+            onSubmitEditing={handleSubmit}
+          />
+          <Input
+            placeholder={t('Email')}
+            LeftContent={Mail}
+            errors={errors}
+            name="email"
+            keyboardType={'email-address'}
+            handleChange={handleChange}
+            handleBlur={handleBlur}
+          />
+          <Input
+            placeholder={t('Text of the complaint or suggestion')}
+            LeftContent={ListIcon}
+            errors={errors}
+            name="text"
+            handleChange={handleChange}
+            handleBlur={handleBlur}
+            numberOfLines={10}
+            multiline
+            style={{textAlignVertical: 'top'}}
+          />
+        </View>
+        <Title>{t('For direct contact')}</Title>
+        <DirectContactContainer>
+          <IconContainer>
+            <Sms fill={theme.colors.main} />
+          </IconContainer>
+          <IconContainer>
+            <Whatsapp fill={theme.colors.main} />
+          </IconContainer>
+          <IconContainer>
+            <Phone fill={theme.colors.main} />
+          </IconContainer>
+          <IconContainer>
+            <Gmail fill={theme.colors.main} />
+          </IconContainer>
+        </DirectContactContainer>
+      </Content>
+      <Button
+        title="Send"
+        style={css`
+          width: 50%;
+          text-align: center;
+          margin: ${({theme}) => theme.pixel(25)} auto;
+        `}
+      />
+    </Container>
+  );
+};
+
+export default Contact;
+
+const Title = styled.Text`
+  color: ${({theme}) => theme.colors.main};
+  font-size: ${({theme}) => theme.pixel(24)};
+  font-family: ${({theme}) => theme.fonts.bold};
+  align-self: center; ;
+`;
+
+const DirectContactContainer = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-top: ${({theme}) => theme.pixel(25)};
+`;
+
+const IconContainer = styled.TouchableOpacity`
+  width: ${({theme}) => theme.pixel(70)};
+  height: ${({theme}) => theme.pixel(70)};
+  background-color: #f7f7fa;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 ${({theme}) => theme.pixel(10)};
+`;

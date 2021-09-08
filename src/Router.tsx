@@ -17,6 +17,9 @@ import Settings from './screens/settings/Settings';
 import Services from './screens/services/Services';
 import {useAuth} from './context/auth';
 import ForgotPasswordScreen from './screens/user/ForgotPassword';
+import Contact from './screens/user/Contact';
+import Policy from './screens/user/Policy';
+import About from './screens/user/About';
 
 enableScreens();
 const Stack = createStackNavigator();
@@ -44,7 +47,7 @@ const Stacks: FC = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName={isLogin ? 'Profile' : 'Login'}>
+      initialRouteName={isLogin ? 'Home' : 'Login'}>
       <Stack.Screen name="Home" component={Tabs} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="RegisterStep1" component={RegisterStep1} />
@@ -52,6 +55,9 @@ const Stacks: FC = () => {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Services" component={Services} />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+      <Stack.Screen name="Contact" component={Contact} />
+      <Stack.Screen name="Policy" component={Policy} />
+      <Stack.Screen name="About" component={About} />
     </Stack.Navigator>
   );
 };

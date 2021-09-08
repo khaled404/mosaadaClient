@@ -18,8 +18,8 @@ export interface IImage {
 }
 
 export interface ITextInput extends TextInputProps {
-  LeftContent?: (props?: SvgProps) => JSX.Element;
-  RightContent?: (props?: SvgProps) => JSX.Element;
+  LeftContent?: any;
+  RightContent?: any;
   containerStyle?: string;
   inputstyle?: string;
   errors?: any;

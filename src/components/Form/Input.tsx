@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import styled from 'styled-components/native';
-import {sPixel} from '../../constants/pixel';
+import {pixel, sPixel} from '../../constants/pixel';
 import {theme} from '../../constants/theme';
 import {ITextInput} from '../../types/interfaces';
 
@@ -14,13 +14,17 @@ const Input: FC<ITextInput> = props => {
     handleBlur = () => {},
     removeStyle = false,
     isEdit = false,
+    multiline,
   } = props;
 
   return (
-    <View removeStyle={removeStyle} isEdit={isEdit}>
+    <View removeStyle={removeStyle} multiline={multiline} isEdit={isEdit}>
       <IconContainer>
         <LeftContent
           fill={errors[name] ? theme.colors.warning : theme.colors.main}
+          width={theme.pixel(40)}
+          height={theme.pixel(40)}
+          style={multiline ? {marginTop: pixel(20)} : {}}
         />
       </IconContainer>
       <TextInput
@@ -31,6 +35,8 @@ const Input: FC<ITextInput> = props => {
       <IconContainer>
         <RightContent
           fill={errors[name] ? theme.colors.warning : theme.colors.main}
+          width={theme.pixel(40)}
+          height={theme.pixel(40)}
         />
       </IconContainer>
     </View>
@@ -53,6 +59,15 @@ const View = styled.View`
   margin-bottom: ${sPixel(45)};
 `}
 
+  ${({multiline, theme}) =>
+    multiline
+      ? `
+      align-items: flex-start;
+      border-radius: 30px;
+
+      `
+      : ''}
+
   ${({isEdit, theme}) =>
     isEdit
       ? `
@@ -73,4 +88,5 @@ const TextInput = styled.TextInput.attrs(props => ({
   font-size: ${sPixel(25)};
   width: 100%;
   flex: 1;
+  text-align: ${({theme}) => theme.left};
 ` as any;

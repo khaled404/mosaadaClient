@@ -3,7 +3,6 @@ import {Container} from '../../globalStyle';
 import {Modalize} from 'react-native-modalize';
 import {useTranslation} from 'react-i18next';
 import {useAuth} from '../../context/auth';
-import {useNavigation} from '@react-navigation/core';
 
 import ProfileHeader from './components/ProfileHeader';
 import styled from 'styled-components/native';
@@ -15,11 +14,14 @@ import User from '../../../assets/svg/User';
 import Phone from '../../../assets/svg/Phone';
 import Email from '../../../assets/svg/Email';
 import Edit from '../../../assets/svg/Edit';
+import Lock from '../../../assets/svg/Lock';
 import {theme} from '../../constants/theme';
 import Success from '../../../assets/svg/Success';
 import {useMutation} from 'react-query';
 import {showMessage} from 'react-native-flash-message';
 import {EditUserHandler} from './api';
+import Input from '../../components/Form/Input';
+import ChangePassword from './components/ChangePassword';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
@@ -34,9 +36,10 @@ const LoginSchema = Yup.object().shape({
 });
 
 const Profile = () => {
-  const lang = useRef<Modalize>(null);
+  const changePassword = useRef<Modalize>(null);
   const {t} = useTranslation();
   const {user, login} = useAuth();
+
   const [isEdit, setisEdit] = useState(false);
   const editUserMutation = useMutation(EditUserHandler, {
     onError: (error: any) => {
@@ -65,7 +68,7 @@ const Profile = () => {
   });
 
   const onOpen = () => {
-    lang.current?.open();
+    changePassword.current?.open();
   };
   return (
     <>
@@ -129,9 +132,27 @@ const Profile = () => {
                 ProfileIcon={Email}
               />
             </Content>
+
+            <Content>
+              <ChangePasswordContainer onPress={onOpen}>
+                <Lock width={theme.pixel(60)} height={theme.pixel(60)} />
+                <PasswordText>*************</PasswordText>
+                <Edit
+                  fill={theme.colors.main}
+                  width={theme.pixel(45)}
+                  height={theme.pixel(45)}
+                  style={theme.dir({marginLeft: 'auto'}, {marginRight: 'auto'})}
+                />
+              </ChangePasswordContainer>
+            </Content>
           </ScrollView>
         </ProfileContainer>
       </Container>
+      <Modalize
+        ref={changePassword}
+        modalStyle={{marginTop: theme.statusBarHeight + 30}}>
+        <ChangePassword />
+      </Modalize>
     </>
   );
 };
@@ -159,6 +180,7 @@ const Content = styled.View`
   border: solid 1px rgba(112, 112, 112, 0.17);
   border-radius: ${({theme}) => theme.pixel(35)};
   padding: ${({theme}) => theme.pixel(5)} 0;
+  margin-bottom: ${({theme}) => theme.pixel(35)};
 `;
 
 const ConatinerHeader = styled.View`
@@ -169,6 +191,18 @@ const ConatinerHeader = styled.View`
     ${({theme}) => theme.appPaddingHorizontal}px;
 `;
 const IconContainer = styled.TouchableOpacity``;
+
+const ChangePasswordContainer = styled.TouchableOpacity`
+  padding: ${({theme}) => theme.pixel(50)}
+    ${({theme}) => theme.appPaddingHorizontal}px;
+  flex-direction: row;
+  align-items: center;
+`;
+const PasswordText = styled.Text`
+  color: ${({theme}) => theme.colors.text};
+  font-size: ${({theme}) => theme.pixel(20)};
+  margin-left: ${({theme}) => theme.pixel(40)};
+`;
 const HeaderTitle = styled.Text`
   font-family: ${({theme}) => theme.fonts.bold};
   color: ${({theme}) => theme.colors.main};
