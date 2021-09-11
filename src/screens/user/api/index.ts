@@ -1,6 +1,8 @@
 import {Platform} from 'react-native';
 import {getUniqueId} from 'react-native-device-info';
 import axios from '../../../constants/axios';
+import {globalUrl} from '../../../constants/axios';
+import Axios from 'axios';
 
 export const LoginHandler = async (body: any) => {
   const {data} = await axios.post('login', {
@@ -74,15 +76,24 @@ export const ChangePasswordHandler = async (body: any) => {
   return data;
 };
 
-export const GetSettingHandler = async (body: any) => {
+export const GetSettingHandler = async () => {
   const {data} = await axios.get('settings');
   return data;
 };
 
 export const ContactHandler = async (body: any) => {
-  const {data} = await axios.post('forget-password', {
-    ...body,
-    contact_type_id: '1',
-  });
+  const {data} = await Axios.post(
+    `${globalUrl}contact-us`,
+    {
+      ...body,
+      contact_type_id: '1',
+    },
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    },
+  );
   return data;
 };

@@ -23,6 +23,11 @@ const RegisterSchema = Yup.object().shape({
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Required'),
+  national_image: Yup.object(),
+  national_id: Yup.string()
+    .min(14, 'Too Short!')
+    .max(14, 'Too Long!')
+    .required('Required'),
 });
 
 const RegisterStep2: FC = () => {

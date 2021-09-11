@@ -39,15 +39,14 @@ const ContactSchema = Yup.object().shape({
 const Contact = () => {
   const {t} = useTranslation();
   const {data} = useQuery('GetSettingHandler', GetSettingHandler);
-  const {handleChange, handleSubmit, handleBlur, resetForm, errors} = useFormik(
-    {
+  const {handleChange, handleSubmit, handleBlur, values, resetForm, errors} =
+    useFormik({
       initialValues: {email: '', name: '', phone: '', message: ''},
       validationSchema: ContactSchema,
       onSubmit: values => {
         mutate(values);
       },
-    },
-  );
+    });
   const {mutate, isLoading} = useMutation(ContactHandler, {
     onError: (error: any) => {
       if (error?.response?.data.errors.length !== 0) {
@@ -87,6 +86,7 @@ const Contact = () => {
             name="name"
             handleChange={handleChange}
             handleBlur={handleBlur}
+            value={values.name}
           />
           <Input
             placeholder={t('Phone')}
@@ -96,6 +96,7 @@ const Contact = () => {
             keyboardType={'phone-pad'}
             handleChange={handleChange}
             handleBlur={handleBlur}
+            value={values.phone}
           />
           <Input
             placeholder={t('Email')}
@@ -105,6 +106,7 @@ const Contact = () => {
             keyboardType={'email-address'}
             handleChange={handleChange}
             handleBlur={handleBlur}
+            value={values.email}
           />
           <Input
             placeholder={t('Text of the complaint or suggestion')}
@@ -115,6 +117,7 @@ const Contact = () => {
             handleBlur={handleBlur}
             numberOfLines={10}
             multiline
+            value={values.message}
             style={{textAlignVertical: 'top'}}
           />
         </View>
