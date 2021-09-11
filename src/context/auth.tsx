@@ -14,6 +14,8 @@ type User = {
   name: string;
   phone: string;
   active: number;
+  national_id: string;
+  national_image: string;
   api_token: string;
 };
 

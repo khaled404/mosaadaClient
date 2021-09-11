@@ -10,25 +10,19 @@ import Input from '../../components/Form/Input';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import User from '../../../assets/svg/User';
-import Phone from '../../../assets/svg/Phone';
 import {useMutation} from 'react-query';
 import {RegisterHandler} from './api';
 import NextArrowButton from './components/NextArrowButton';
 import {showMessage} from 'react-native-flash-message';
 import {useAuth} from '../../context/auth';
+import UserId from '../../../assets/svg/UserId';
+import AddIcon from '../../../assets/svg/AddIcon';
+import UplodImage from '../../components/Form/UplodImage';
 const RegisterSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Required'),
-  phone: Yup.string()
-    .min(11, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Required'),
-  // nationalID: Yup.number()
-  //   .min(2, 'Too Short!')
-  //   .max(50, 'Too Long!')
-  //   .required('Required'),
 });
 
 const RegisterStep2: FC = () => {
@@ -36,11 +30,13 @@ const RegisterStep2: FC = () => {
   const {params} = useRoute();
   const {t} = useTranslation();
   const {login} = useAuth();
-  const {mutate, isLoading, data} = useMutation(RegisterHandler, {
+  const {mutate, isLoading} = useMutation(RegisterHandler, {
     onError: (error: any) => {
-      if (Object.keys(error?.response?.data.errors).length !== 0) {
+      if (error?.response?.data.errors.length !== 0) {
         showMessage({
-          message: Object.values(error?.response?.data?.errors).join('\n'),
+          message: error?.response?.data?.errors
+            .map((item: any) => item.value)
+            .join('\n'),
           type: 'danger',
         });
         return;
@@ -57,11 +53,14 @@ const RegisterStep2: FC = () => {
     },
   });
 
-  const {handleChange, handleSubmit, handleBlur, values, errors} = useFormik({
-    initialValues: {name: '', phone: ''},
-    validationSchema: RegisterSchema,
-    onSubmit: values => mutate({...values, ...params}),
-  });
+  const {handleChange, handleSubmit, handleBlur, values, errors, setValues} =
+    useFormik({
+      initialValues: {name: '', national_id: '', national_image: ''},
+      validationSchema: RegisterSchema,
+      onSubmit: values => {
+        mutate({...values, ...params});
+      },
+    });
 
   return (
     <Container>
@@ -85,34 +84,30 @@ const RegisterStep2: FC = () => {
           handleBlur={handleBlur}
           onSubmitEditing={handleSubmit}
         />
-        <Input
-          placeholder={t('Phone')}
-          LeftContent={Phone}
-          errors={errors}
-          name="phone"
-          keyboardType="phone-pad"
-          handleChange={handleChange}
-          handleBlur={handleBlur}
-          onSubmitEditing={handleSubmit}
-        />
 
-        {/* <Input
+        <Input
           placeholder={t('National ID')}
           LeftContent={UserId}
           errors={errors}
-          name="nationalID"
+          name="national_id"
+          keyboardType="number-pad"
           handleChange={handleChange}
           handleBlur={handleBlur}
         />
-        <Input
-          placeholder={t('Front card image')}
+        <UplodImage
+          placeholder={t('Front national card image')}
           LeftContent={UserId}
           RightContent={AddIcon}
           errors={errors}
-          name="nationalID"
-          handleChange={handleChange}
+          name="national_image"
           handleBlur={handleBlur}
-        /> */}
+          handleChange={(uri: any) =>
+            setValues({
+              ...values,
+              national_image: uri,
+            })
+          }
+        />
         <NextArrowButton isLoading={isLoading} onPress={handleSubmit} />
       </Content>
     </Container>

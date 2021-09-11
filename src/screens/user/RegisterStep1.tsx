@@ -12,9 +12,14 @@ import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import ArrowLeft from '../../../assets/svg/ArrowLeft';
 import Lock from '../../../assets/svg/Lock';
+import Phone from '../../../assets/svg/Phone';
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
   password: Yup.string().min(6).required('Required'),
+  phone: Yup.string()
+    .min(11, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
   passwordConfirmation: Yup.string()
     .oneOf([Yup.ref('password'), null], 'كلمة المرور غير متشابهة')
     .required('Required'),
@@ -24,7 +29,12 @@ const RegisterStep1: FC = () => {
   const {navigate} = useNavigation();
   const {t} = useTranslation();
   const {handleChange, handleSubmit, handleBlur, values, errors} = useFormik({
-    initialValues: {email: '', password: '', passwordConfirmation: ''},
+    initialValues: {
+      email: '',
+      phone: '',
+      password: '',
+      passwordConfirmation: '',
+    },
     validationSchema: LoginSchema,
     onSubmit: values => navigate('RegisterStep2', values),
   });
@@ -47,6 +57,16 @@ const RegisterStep1: FC = () => {
           LeftContent={Mail as any}
           errors={errors}
           name="email"
+          handleChange={handleChange}
+          handleBlur={handleBlur}
+          onSubmitEditing={handleSubmit}
+        />
+        <Input
+          placeholder={t('Phone')}
+          LeftContent={Phone}
+          errors={errors}
+          name="phone"
+          keyboardType="phone-pad"
           handleChange={handleChange}
           handleBlur={handleBlur}
           onSubmitEditing={handleSubmit}

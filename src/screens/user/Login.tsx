@@ -68,7 +68,9 @@ const Login: FC = () => {
             `}
           />
         </LogoContainer>
-        <Title>{t('Please enter the following data')}</Title>
+        <Title style={{marginTop: 40, marginBottom: 40}}>
+          {t('Please enter the following data')}
+        </Title>
         <Input
           placeholder={t('Email')}
           LeftContent={Mail as any}

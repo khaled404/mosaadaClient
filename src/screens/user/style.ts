@@ -13,9 +13,9 @@ export const Title = styled.Text`
   text-align: center;
   color: ${props => props.theme.colors.main};
   font-family: ${props => props.theme.fonts.regular};
-  margin-top: ${sPixel(93)};
+  margin-top: ${sPixel(10)};
   font-size: ${sPixel(25)};
-  margin-bottom: ${sPixel(120)};
+  margin-bottom: ${sPixel(50)};
 `;
 
 export const Content = styled.View`

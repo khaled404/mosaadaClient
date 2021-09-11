@@ -16,20 +16,64 @@ import Gmail from '../../../assets/svg/Gmail';
 import {theme} from '../../constants/theme';
 import Whatsapp from '../../../assets/svg/Whatsapp';
 import Sms from '../../../assets/svg/Sms';
+import {useMutation, useQuery} from 'react-query';
+import {ContactHandler, GetSettingHandler} from './api';
+import {OpenUrlHandler} from '../../constants/helpers';
+import {showMessage} from 'react-native-flash-message';
 const ContactSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
+  name: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+  phone: Yup.string()
+    .min(11, 'Too Short!')
+    .max(11, 'Too Long!')
+    .required('Required'),
+  message: Yup.string()
+    .min(2, 'Too Short!')
+    .max(10000, 'Too Long!')
+    .required('Required'),
 });
 
 const Contact = () => {
   const {t} = useTranslation();
+  const {data} = useQuery('GetSettingHandler', GetSettingHandler);
+  const {handleChange, handleSubmit, handleBlur, resetForm, errors} = useFormik(
+    {
+      initialValues: {email: '', name: '', phone: '', message: ''},
+      validationSchema: ContactSchema,
+      onSubmit: values => {
+        mutate(values);
+      },
+    },
+  );
+  const {mutate, isLoading} = useMutation(ContactHandler, {
+    onError: (error: any) => {
+      if (error?.response?.data.errors.length !== 0) {
+        showMessage({
+          message: error?.response?.data?.errors
+            .map((item: any) => item.value)
+            .join('\n'),
+          type: 'danger',
+        });
+        return;
+      }
+      showMessage({
+        message: error?.response?.data?.message,
+        type: 'danger',
+      });
+    },
+    onSuccess: () => {
+      resetForm();
 
-  const {handleChange, handleSubmit, handleBlur, values, errors} = useFormik({
-    initialValues: {email: '', phone: ''},
-    validationSchema: ContactSchema,
-    onSubmit: values => {
-      // mutate(values)
+      showMessage({
+        message: t('Message added successfully'),
+        type: 'success',
+      });
     },
   });
+
   return (
     <Container white>
       <Header title={t('Contact us')} />
@@ -52,7 +96,6 @@ const Contact = () => {
             keyboardType={'phone-pad'}
             handleChange={handleChange}
             handleBlur={handleBlur}
-            onSubmitEditing={handleSubmit}
           />
           <Input
             placeholder={t('Email')}
@@ -67,7 +110,7 @@ const Contact = () => {
             placeholder={t('Text of the complaint or suggestion')}
             LeftContent={ListIcon}
             errors={errors}
-            name="text"
+            name="message"
             handleChange={handleChange}
             handleBlur={handleBlur}
             numberOfLines={10}
@@ -77,16 +120,28 @@ const Contact = () => {
         </View>
         <Title>{t('For direct contact')}</Title>
         <DirectContactContainer>
-          <IconContainer>
+          <IconContainer
+            onPress={() => {
+              OpenUrlHandler(`sms:${data?.data?.settings?.sms}`);
+            }}>
             <Sms fill={theme.colors.main} />
           </IconContainer>
-          <IconContainer>
+          <IconContainer
+            onPress={() => {
+              OpenUrlHandler(`https://wa.me/${data?.data?.settings?.whatsapp}`);
+            }}>
             <Whatsapp fill={theme.colors.main} />
           </IconContainer>
-          <IconContainer>
+          <IconContainer
+            onPress={() => {
+              OpenUrlHandler(`tel:${data?.data?.settings?.phone}`);
+            }}>
             <Phone fill={theme.colors.main} />
           </IconContainer>
-          <IconContainer>
+          <IconContainer
+            onPress={() => {
+              OpenUrlHandler(`mailto:${data?.data?.settings?.email}`);
+            }}>
             <Gmail fill={theme.colors.main} />
           </IconContainer>
         </DirectContactContainer>
@@ -98,6 +153,8 @@ const Contact = () => {
           text-align: center;
           margin: ${({theme}) => theme.pixel(25)} auto;
         `}
+        onPress={handleSubmit}
+        isLoading={isLoading}
       />
     </Container>
   );

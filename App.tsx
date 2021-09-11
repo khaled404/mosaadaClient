@@ -67,7 +67,6 @@ const App = () => {
     onSuccess: data => {
       setIsLogin(true);
       login(data.data);
-      console.log(data);
     },
     retry: false,
   });

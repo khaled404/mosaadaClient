@@ -20,8 +20,10 @@ import Success from '../../../assets/svg/Success';
 import {useMutation} from 'react-query';
 import {showMessage} from 'react-native-flash-message';
 import {EditUserHandler} from './api';
-import Input from '../../components/Form/Input';
 import ChangePassword from './components/ChangePassword';
+import UserId from '../../../assets/svg/UserId';
+import ChangeNational from './components/ChangeNational';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
@@ -37,14 +39,19 @@ const LoginSchema = Yup.object().shape({
 
 const Profile = () => {
   const changePassword = useRef<Modalize>(null);
+  const changeNational = useRef<Modalize>(null);
   const {t} = useTranslation();
   const {user, login} = useAuth();
 
   const [isEdit, setisEdit] = useState(false);
   const editUserMutation = useMutation(EditUserHandler, {
     onError: (error: any) => {
+      console.log(error?.response?.data);
+
       showMessage({
-        message: error?.response?.data?.message,
+        message: error?.response?.data?.errors
+          .map((item: any) => item.value)
+          .join('\n'),
         type: 'danger',
       });
     },
@@ -58,14 +65,44 @@ const Profile = () => {
       login(data.data);
     },
   });
-  const {handleChange, handleSubmit, handleBlur, values, errors} = useFormik({
-    initialValues: {name: user?.name, email: user?.email, phone: user?.phone},
-    validationSchema: LoginSchema,
-    onSubmit: values => {
-      console.log(values);
-      editUserMutation.mutate(values);
-    },
-  });
+  const {handleChange, handleSubmit, handleBlur, values, setValues, errors} =
+    useFormik({
+      initialValues: {
+        name: user?.name,
+        email: user?.email,
+        phone: user?.phone,
+        avatar: undefined,
+        imageUrl: user?.avatar,
+        national_id: user?.national_id,
+      },
+      validationSchema: LoginSchema,
+      onSubmit: values => {
+        editUserMutation.mutate(values);
+      },
+    });
+
+  const picImageHandler = async () => {
+    try {
+      launchImageLibrary(
+        {
+          mediaType: 'photo',
+          quality: 0.5,
+        },
+        (response: any) => {
+          if (response?.assets) {
+            setValues({
+              ...values,
+              avatar: response.assets[0],
+              imageUrl: response.assets[0].uri,
+            });
+            handleSubmit();
+          }
+        },
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const onOpen = () => {
     changePassword.current?.open();
@@ -73,7 +110,7 @@ const Profile = () => {
   return (
     <>
       <Container>
-        <ProfileHeader imageURL={user?.avatar} />
+        <ProfileHeader imageURL={values?.imageUrl} onPress={picImageHandler} />
         <ProfileContainer>
           <ScrollView>
             <Content>
@@ -131,6 +168,29 @@ const Profile = () => {
                 editable={isEdit}
                 ProfileIcon={Email}
               />
+              <ProfileInput
+                placeholder={t('National ID')}
+                value={user.national_id}
+                errors={errors}
+                name="national_id"
+                keyboardType="number-pad"
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                editable={isEdit}
+                ProfileIcon={UserId}
+              />
+              <ProfileInput
+                placeholder={t('Front national card image')}
+                value={user?.national_image}
+                errors={errors}
+                name="national_image"
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                editable={false}
+                ProfileIcon={UserId}
+                iamgeNational
+                onPress={() => changeNational.current?.open()}
+              />
             </Content>
 
             <Content>
@@ -150,8 +210,23 @@ const Profile = () => {
       </Container>
       <Modalize
         ref={changePassword}
-        modalStyle={{marginTop: theme.statusBarHeight + 30}}>
+        snapPoint={theme.screenDimensions.height / 1.5}
+        overlayStyle={{
+          paddingTop: theme.statusBarHeight + 30,
+        }}>
         <ChangePassword />
+      </Modalize>
+      <Modalize
+        ref={changeNational}
+        snapPoint={theme.screenDimensions.height / 1.5}
+        overlayStyle={{
+          paddingTop: theme.statusBarHeight + 30,
+        }}>
+        <ChangeNational
+          uri={user?.national_image}
+          onChangeHandler={image => {}}
+          close={changeNational.current?.close}
+        />
       </Modalize>
     </>
   );

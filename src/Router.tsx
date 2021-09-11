@@ -20,6 +20,7 @@ import ForgotPasswordScreen from './screens/user/ForgotPassword';
 import Contact from './screens/user/Contact';
 import Policy from './screens/user/Policy';
 import About from './screens/user/About';
+import Address from './screens/address/Address';
 
 enableScreens();
 const Stack = createStackNavigator();
@@ -58,6 +59,7 @@ const Stacks: FC = () => {
       <Stack.Screen name="Contact" component={Contact} />
       <Stack.Screen name="Policy" component={Policy} />
       <Stack.Screen name="About" component={About} />
+      <Stack.Screen name="Address" component={Address} />
     </Stack.Navigator>
   );
 };

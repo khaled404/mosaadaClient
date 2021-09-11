@@ -8,7 +8,7 @@ export default {
   'The name on the card': 'الإسم علي البطاقة',
   Phone: 'رقم الهاتف',
   'National ID': 'الرقم القومى',
-  'Front card image': 'صورة البطاقة الأمامية',
+  'Front national card image': 'صورة البطاقة الأمامية',
   Welcome: 'أهلا بك',
   'How can we help you?': 'كيف يمكننا مساعدتك؟',
   Service: 'خدمة',
@@ -42,4 +42,7 @@ export default {
   Send: 'إرسال',
   'For direct contact': 'للتواصل المباشر',
   'About us': 'عن التطبيق',
+  Save: 'حفظ',
+  Close: 'إغلاق',
+  'Message added successfully': 'تمت إضافة الرسالة بنجاح',
 };

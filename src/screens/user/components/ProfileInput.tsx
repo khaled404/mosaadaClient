@@ -1,18 +1,21 @@
 import React, {FC} from 'react';
 import {View} from 'react-native';
-import styled from 'styled-components/native';
-import User from '../../../../assets/svg/User';
+import styled, {css} from 'styled-components/native';
 import Input from '../../../components/Form/Input';
+import Image from '../../../components/image/Image';
 import {theme} from '../../../constants/theme';
 import {ITextInput} from '../../../types/interfaces';
 
 interface IProfileInput extends ITextInput {
   ProfileIcon: any;
+  iamgeNational?: boolean;
+  onPress?: () => void | undefined;
 }
 const ProfileInput: FC<IProfileInput> = props => {
-  const {ProfileIcon, placeholder, editable} = props;
+  const {ProfileIcon, placeholder, editable, iamgeNational, value, onPress} =
+    props;
   return (
-    <Container>
+    <Container onPress={onPress} activeOpacity={!!onPress ? 0.5 : 1}>
       <IconContainer>
         <ProfileIcon
           width={theme.pixel(40)}
@@ -21,17 +24,29 @@ const ProfileInput: FC<IProfileInput> = props => {
         />
       </IconContainer>
       <View style={{flex: 1}}>
-        <Title>{placeholder}</Title>
-        <Input
-          {...props}
-          removeStyle={true}
-          isEdit={editable}
-          style={{
-            color: theme.colors.main,
-            fontFamily: theme.fonts.bold,
-            textAlign: 'right',
-          }}
-        />
+        <Title style={!!onPress ? {marginBottom: -20} : {}}>
+          {placeholder}
+        </Title>
+        {iamgeNational ? (
+          <Image
+            url={value}
+            style={css`
+              width: ${({theme}) => theme.pixel(240)};
+              height: ${({theme}) => theme.pixel(240)};
+            `}
+          />
+        ) : (
+          <Input
+            {...props}
+            removeStyle={true}
+            isEdit={editable}
+            style={{
+              color: theme.colors.main,
+              fontFamily: theme.fonts.bold,
+              textAlign: 'right',
+            }}
+          />
+        )}
       </View>
     </Container>
   );
@@ -39,7 +54,7 @@ const ProfileInput: FC<IProfileInput> = props => {
 
 export default ProfileInput;
 
-const Container = styled.View`
+const Container = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   padding: 0 ${({theme}) => theme.pixel(35)} ${({theme}) => theme.pixel(15)};

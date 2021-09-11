@@ -61,12 +61,18 @@ const Settings = () => {
 
         <SettingsContainer>
           <SettingsScroll>
-            <SettingsBox Icon={MapIconLg} title={t('Address')} />
+            <SettingsBox
+              Icon={MapIconLg}
+              title={t('Address')}
+              onPress={() => {
+                navigate('Address');
+              }}
+            />
             <SettingsBox
               Icon={ListIcon}
               title={t('Usage policy')}
               onPress={() => {
-                navigate('Policy`');
+                navigate('Policy');
               }}
             />
             <SettingsBox
@@ -104,7 +110,7 @@ const Settings = () => {
 
       <Modalize
         ref={lang}
-        snapPoint={300}
+        snapPoint={theme.screenDimensions.height / 3}
         modalStyle={{marginTop: theme.statusBarHeight + 30}}>
         <ToggleLanguage
           title="عربي"
