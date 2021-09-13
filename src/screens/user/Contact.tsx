@@ -6,7 +6,6 @@ import {useTranslation} from 'react-i18next';
 import styled, {css} from 'styled-components/native';
 import * as Yup from 'yup';
 import {useFormik} from 'formik';
-import Mail from '../../../assets/svg/Mail';
 import Input from '../../components/Form/Input';
 import User from '../../../assets/svg/User';
 import Phone from '../../../assets/svg/Phone';
@@ -20,6 +19,7 @@ import {useMutation, useQuery} from 'react-query';
 import {ContactHandler, GetSettingHandler} from './api';
 import {OpenUrlHandler} from '../../constants/helpers';
 import {showMessage} from 'react-native-flash-message';
+import Email from '../../../assets/svg/Email';
 const ContactSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
   name: Yup.string()
@@ -100,10 +100,10 @@ const Contact = () => {
           />
           <Input
             placeholder={t('Email')}
-            LeftContent={Mail}
+            LeftContent={Email}
             errors={errors}
             name="email"
-            keyboardType={'email-address'}
+            keyboardType="email-address"
             handleChange={handleChange}
             handleBlur={handleBlur}
             value={values.email}
@@ -127,25 +127,41 @@ const Contact = () => {
             onPress={() => {
               OpenUrlHandler(`sms:${data?.data?.settings?.sms}`);
             }}>
-            <Sms fill={theme.colors.main} />
+            <Sms
+              fill={theme.colors.main}
+              width={theme.pixel(40)}
+              height={theme.pixel(40)}
+            />
           </IconContainer>
           <IconContainer
             onPress={() => {
               OpenUrlHandler(`https://wa.me/${data?.data?.settings?.whatsapp}`);
             }}>
-            <Whatsapp fill={theme.colors.main} />
+            <Whatsapp
+              fill={theme.colors.main}
+              width={theme.pixel(40)}
+              height={theme.pixel(40)}
+            />
           </IconContainer>
           <IconContainer
             onPress={() => {
               OpenUrlHandler(`tel:${data?.data?.settings?.phone}`);
             }}>
-            <Phone fill={theme.colors.main} />
+            <Phone
+              fill={theme.colors.main}
+              width={theme.pixel(40)}
+              height={theme.pixel(40)}
+            />
           </IconContainer>
           <IconContainer
             onPress={() => {
               OpenUrlHandler(`mailto:${data?.data?.settings?.email}`);
             }}>
-            <Gmail fill={theme.colors.main} />
+            <Gmail
+              fill={theme.colors.main}
+              width={theme.pixel(40)}
+              height={theme.pixel(40)}
+            />
           </IconContainer>
         </DirectContactContainer>
       </Content>

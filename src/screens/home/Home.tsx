@@ -1,9 +1,7 @@
-import {useNavigation} from '@react-navigation/core';
 import React, {FC} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ActivityIndicator, View} from 'react-native';
 import {useQuery} from 'react-query';
-import {pixel} from '../../constants/pixel';
 import {theme} from '../../constants/theme';
 import {Container, Content} from '../../globalStyle';
 import {GetHomeHandler} from './api';
@@ -24,7 +22,7 @@ const Home: FC = () => {
         <View
           style={{
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            justifyContent: isLoading ? 'center' : 'space-between',
             flexWrap: 'wrap',
           }}>
           {isLoading ? (

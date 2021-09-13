@@ -13,12 +13,7 @@ declare module 'styled-components' {
     dir: (ar: any, en: any) => any;
     left: string;
     right: string;
-    mediaQuery: (
-      size: number,
-      smStyle: any,
-      originalStyle: any,
-      dimensions: 'w' | 'h',
-    ) => any;
+    mediaQuery: (styles: any, defaultStyle: any, dimensions: 'w' | 'h') => any;
     screenDimensions: {
       width: number;
       height: number;

@@ -25,6 +25,7 @@ import {LoginHandler} from './api';
 import NextArrowButton from './components/NextArrowButton';
 import {showMessage} from 'react-native-flash-message';
 import {useAuth} from '../../context/auth';
+import Email from '../../../assets/svg/Email';
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
   password: Yup.string()
@@ -73,11 +74,12 @@ const Login: FC = () => {
         </Title>
         <Input
           placeholder={t('Email')}
-          LeftContent={Mail as any}
+          LeftContent={Email}
           errors={errors}
           name="email"
           handleChange={handleChange}
           handleBlur={handleBlur}
+          keyboardType="email-address"
         />
         <Input
           placeholder={t('Password')}

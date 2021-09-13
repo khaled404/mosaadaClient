@@ -25,11 +25,8 @@ import {AsyncKeys} from './src/types/enums';
 import {useQuery} from 'react-query';
 import {GetUserHandler} from './src/screens/user/api';
 import {useAuth} from './src/context/auth';
-const {isRTL, forceRTL, allowRTL} = I18nManager;
-if (!isRTL) {
-  forceRTL(true);
-  allowRTL(true);
-}
+const {isRTL} = I18nManager;
+
 i18n.use(initReactI18next).init({
   resources: {
     ar: {
@@ -87,6 +84,9 @@ const App = () => {
       RNBootSplash.hide({fade: true});
     }
   }, [isLogin]);
+
+  console.log(theme.screenDimensions);
+
   if (isLogin === null) return <View></View>;
   return (
     <ThemeProvider theme={theme}>

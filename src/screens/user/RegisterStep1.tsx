@@ -13,6 +13,7 @@ import * as Yup from 'yup';
 import ArrowLeft from '../../../assets/svg/ArrowLeft';
 import Lock from '../../../assets/svg/Lock';
 import Phone from '../../../assets/svg/Phone';
+import Email from '../../../assets/svg/Email';
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
   password: Yup.string().min(6).required('Required'),
@@ -54,12 +55,13 @@ const RegisterStep1: FC = () => {
         <Title>{t('Please enter the following data')}</Title>
         <Input
           placeholder={t('Email')}
-          LeftContent={Mail as any}
+          LeftContent={Email}
           errors={errors}
           name="email"
           handleChange={handleChange}
           handleBlur={handleBlur}
           onSubmitEditing={handleSubmit}
+          keyboardType="email-address"
         />
         <Input
           placeholder={t('Phone')}

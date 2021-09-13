@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import styled from 'styled-components/native';
-import Bill from '../../../assets/svg/Bill';
+import Bell from '../../../assets/svg/Bell';
 import Gear from '../../../assets/svg/Gear';
 import HomeIcon from '../../../assets/svg/HomeIcon';
 import ListIcon from '../../../assets/svg/ListIcon';
@@ -17,7 +17,7 @@ const BottomTabs: FC<any> = props => {
     HomeTab: HomeIcon,
     Wallet: WalletIcon,
     Orders: ListIcon,
-    Notifications: Bill,
+    Notifications: Bell,
     Settings: Gear,
   };
   return (

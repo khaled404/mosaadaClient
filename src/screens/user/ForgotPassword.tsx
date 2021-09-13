@@ -15,6 +15,7 @@ import {ForgotPasswordHandler} from './api';
 import NextArrowButton from './components/NextArrowButton';
 import {showMessage} from 'react-native-flash-message';
 import {useAuth} from '../../context/auth';
+import Email from '../../../assets/svg/Email';
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
 });
@@ -58,12 +59,13 @@ const ForgotPasswordScreen: FC = () => {
         <Title>{t('Please enter the following data')}</Title>
         <Input
           placeholder={t('Email')}
-          LeftContent={Mail as any}
+          LeftContent={Email}
           errors={errors}
           name="email"
           handleChange={handleChange}
           handleBlur={handleBlur}
           onSubmitEditing={handleSubmit}
+          keyboardType="email-address"
         />
         <NextArrowButton isLoading={isLoading} onPress={handleSubmit} />
       </Content>

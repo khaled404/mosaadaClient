@@ -167,6 +167,7 @@ const Profile = () => {
                 handleBlur={handleBlur}
                 editable={isEdit}
                 ProfileIcon={Email}
+                keyboardType="email-address"
               />
               <ProfileInput
                 placeholder={t('National ID')}

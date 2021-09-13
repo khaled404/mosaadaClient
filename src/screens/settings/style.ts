@@ -2,7 +2,8 @@ import styled from 'styled-components/native';
 
 export const SettingsContainer = styled.View`
   background-color: #fff;
-  height: ${({theme}) => theme.mediaQuery(788, '67%', '73%', 'h')};
+  height: ${({theme}) =>
+    theme.mediaQuery({788: '67%', 772: '64%'}, '73%', 'h')};
   width: 90%;
   align-self: center;
   border: solid 1px rgba(112, 112, 112, 0.17);

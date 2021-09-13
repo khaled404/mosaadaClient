@@ -24,9 +24,7 @@ const ProfileInput: FC<IProfileInput> = props => {
         />
       </IconContainer>
       <View style={{flex: 1}}>
-        <Title style={!!onPress ? {marginBottom: -20} : {}}>
-          {placeholder}
-        </Title>
+        <Title>{placeholder}</Title>
         {iamgeNational ? (
           <Image
             url={value}

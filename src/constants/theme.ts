@@ -3,6 +3,7 @@ import {Dimensions, I18nManager, NativeModules} from 'react-native';
 import {sPixel} from './pixel';
 import colorWithOpacity from './colorWithOpacity';
 import {CSSObject} from 'styled-components';
+import mediaQuery from './mediaQuery';
 
 export const theme: DefaultTheme = {
   appPaddingVertical: 30,
@@ -18,10 +19,7 @@ export const theme: DefaultTheme = {
   left: I18nManager.isRTL ? 'right' : 'left',
   right: I18nManager.isRTL ? 'left' : 'right',
   colorWithOpacity: colorWithOpacity,
-  mediaQuery: (size, smStyle, originalStyle, dimension = 'w') =>
-    size <= Dimensions.get('window')[dimension === 'h' ? 'height' : 'width']
-      ? smStyle
-      : originalStyle,
+  mediaQuery: mediaQuery,
   colors: {
     main: '#003a76',
     grayMain: '#487AAE',
