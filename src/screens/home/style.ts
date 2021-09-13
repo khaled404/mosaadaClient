@@ -23,7 +23,7 @@ export const UserName = styled.Text`
   color: ${({theme}) => theme.colors.main};
   font-family: ${({theme}) => theme.fonts.regular};
   font-size: ${sPixel(35)};
-  margin-${({theme}) => theme.left}: ${sPixel(35)};
+  margin-right: ${sPixel(35)};
 `;
 
 export const BannerContainer = styled.View`

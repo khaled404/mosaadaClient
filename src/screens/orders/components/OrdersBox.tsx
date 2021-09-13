@@ -9,6 +9,7 @@ import MapPin from '../../../../assets/svg/MapPin';
 import Image from '../../../components/image/Image';
 import {theme} from '../../../constants/theme';
 import {EImages} from '../../../types/enums';
+import {pixel} from '../../../constants/pixel';
 
 const OrdersBox = () => {
   const {t} = useTranslation();
@@ -43,12 +44,20 @@ const OrdersBox = () => {
           </DateContainer>
         </View>
         <View style={{flexDirection: 'row', paddingTop: 10}}>
-          <MapPin fill={theme.colors.main} />
+          <MapPin
+            width={pixel(30)}
+            height={pixel(30)}
+            fill={theme.colors.main}
+          />
           <MapText>{t('Starting Location')}</MapText>
           <LocationText>الموقع الحالي</LocationText>
         </View>
         <View style={{flexDirection: 'row', paddingTop: 10}}>
-          <MapPin fill={theme.colors.main} />
+          <MapPin
+            width={pixel(30)}
+            height={pixel(30)}
+            fill={theme.colors.main}
+          />
           <MapText>{t('Arrival Location')}</MapText>
           <LocationText>المنزل شارع الشفعى - ميت غمر</LocationText>
         </View>
