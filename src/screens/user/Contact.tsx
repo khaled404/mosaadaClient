@@ -166,7 +166,7 @@ const Contact = () => {
         </DirectContactContainer>
       </Content>
       <Button
-        title="Send"
+        title={t('Send')}
         style={css`
           width: 50%;
           text-align: center;

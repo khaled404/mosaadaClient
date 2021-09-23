@@ -85,8 +85,6 @@ const App = () => {
     }
   }, [isLogin]);
 
-  console.log(theme.screenDimensions);
-
   if (isLogin === null) return <View></View>;
   return (
     <ThemeProvider theme={theme}>

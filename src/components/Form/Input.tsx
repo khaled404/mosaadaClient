@@ -15,10 +15,15 @@ const Input: FC<ITextInput> = props => {
     removeStyle = false,
     isEdit = false,
     multiline,
+    style,
   } = props;
 
   return (
-    <View removeStyle={removeStyle} multiline={multiline} isEdit={isEdit}>
+    <View
+      removeStyle={removeStyle}
+      multiline={multiline}
+      isEdit={isEdit}
+      style={style}>
       <IconContainer>
         <LeftContent
           fill={errors[name] ? theme.colors.warning : theme.colors.main}

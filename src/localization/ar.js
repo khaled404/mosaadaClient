@@ -45,4 +45,12 @@ export default {
   Save: 'حفظ',
   Close: 'إغلاق',
   'Message added successfully': 'تمت إضافة الرسالة بنجاح',
+  'Add new ddress': 'إضافة عنوان جديد',
+  'Address details': 'تفاصيل العنوان',
+  'Edited successfully': 'تم التحرير بنجاح',
+  'Added successfully': 'اضيف بنجاح',
+  'Address Title': 'العنوان',
+  'Deleted successfully': 'تم الحذف بنجاح',
+  Add: 'إضافة',
+  Send: 'إرسال',
 };
