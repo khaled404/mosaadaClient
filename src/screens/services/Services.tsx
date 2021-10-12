@@ -11,6 +11,7 @@ import Loading from '../../components/loading/Loading';
 import {useTranslation} from 'react-i18next';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
+import FormInputs from '../../components/Form/FormInputs';
 
 type tParams = {params: {servicesId: number}};
 export default function Services() {
@@ -24,9 +25,9 @@ export default function Services() {
 
   const pageData = data?.data;
 
-  const getInitStaate = () => {
-    let values = {};
-    let yupSchema = {};
+  const getInitState = () => {
+    let values = {} as any;
+    let yupSchema = {} as any;
     for (let index = 0; index < pageData?.inputs?.length; index++) {
       const element = pageData?.inputs[index].id;
       values[element] = '';
@@ -34,17 +35,15 @@ export default function Services() {
     }
     return {values, yupSchema};
   };
-  console.log(getInitStaate().yupSchema);
 
   const {handleChange, handleSubmit, handleBlur, values, errors} = useFormik({
-    initialValues: getInitStaate().values,
-    valivalidationSchema: getInitStaate().yupSchema,
+    initialValues: getInitState().values,
+    valivalidationSchema: getInitState().yupSchema as any,
     onSubmit: values => {},
   });
 
-  console.log(values);
-
   if (isLoading) return <Loading />;
+  console.log(pageData);
 
   return (
     <Container white>
@@ -55,6 +54,13 @@ export default function Services() {
           description={pageData.description}
         />
         <DateTimeInput />
+        <FormInputs
+          data={pageData.inputs}
+          values={values}
+          errors={errors}
+          handleChange={handleChange}
+          handleBlur={handleBlur}
+        />
       </Content>
     </Container>
   );

@@ -44,8 +44,6 @@ const AddAddress = () => {
     longitude: 31.233334,
   });
 
-  console.log(savedCoords, 'savedCoords');
-
   const setInitCoords = (position: any) => {
     setCoords(e => ({
       ...e,

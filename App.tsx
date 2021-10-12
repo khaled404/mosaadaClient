@@ -9,7 +9,12 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {I18nManager, StatusBar, View} from 'react-native';
+import {
+  I18nManager,
+  StatusBar,
+  unstable_enableLogBox,
+  View,
+} from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import ar from './src/localization/ar';
 import en from './src/localization/en';
@@ -63,6 +68,8 @@ const App = () => {
     },
     onSuccess: data => {
       setIsLogin(true);
+      console.log(data.data);
+
       login(data.data);
     },
     retry: false,

@@ -54,4 +54,5 @@ export default {
   Add: 'إضافة',
   Send: 'إرسال',
   'About service': 'عن الخدمة',
+  'Service details': 'تفاصيل الخدمة',
 };

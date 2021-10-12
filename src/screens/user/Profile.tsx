@@ -56,7 +56,6 @@ const Profile = () => {
       });
     },
     onSuccess: data => {
-      console.log(data);
       showMessage({
         message: t('Profile updated successfully'),
         type: 'success',
