@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 import FastImage from 'react-native-fast-image';
+
 import styled from 'styled-components/native';
 import {IImage} from '../../types/interfaces';
 const View = styled.View`

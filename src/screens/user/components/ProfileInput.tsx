@@ -31,6 +31,7 @@ const ProfileInput: FC<IProfileInput> = props => {
             style={css`
               width: ${({theme}) => theme.pixel(240)};
               height: ${({theme}) => theme.pixel(240)};
+              padding: ${({theme}) => theme.pixel(30)};
             `}
           />
         ) : (
@@ -41,7 +42,7 @@ const ProfileInput: FC<IProfileInput> = props => {
             style={{
               color: theme.colors.main,
               fontFamily: theme.fonts.bold,
-              textAlign: 'right',
+              textAlign: theme.left,
             }}
           />
         )}
@@ -66,6 +67,6 @@ const Title = styled.Text(({theme}) => ({
   color: theme.colors.text,
 }));
 
-const IconContainer = styled.View` 
-  padding-${({theme}) => theme.left}:${({theme}) => theme.pixel(40)};
+const IconContainer = styled.View`
+  padding-right: ${({theme}) => theme.pixel(40)};
 `;

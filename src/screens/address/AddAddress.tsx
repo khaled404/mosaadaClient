@@ -1,7 +1,7 @@
 import {useFormik} from 'formik';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from '../../components/button/Button';
-import MapView from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 import styled, {css} from 'styled-components/native';
 import {Container} from '../../globalStyle';
 import Header from './components/Header';
@@ -15,6 +15,11 @@ import Location from '../../../assets/svg/Location';
 import {theme} from '../../constants/theme';
 import {pixel} from '../../constants/pixel';
 import {useNavigation} from '@react-navigation/core';
+import Geolocation from 'react-native-geolocation-service';
+import Loading from '../../components/loading/Loading';
+import Image from '../../components/image/Image';
+import {EImages} from '../../types/enums';
+
 const ShowEditAddressSchema = Yup.object().shape({
   name: Yup.string().min(2).required('Required'),
   address_name: Yup.string().min(2).required('Required'),
@@ -23,6 +28,40 @@ const AddAddress = () => {
   const {t} = useTranslation();
   const {goBack} = useNavigation();
   const queryClient = useQueryClient();
+  const [isLoadingLoction, setIsLoadingLoction] = useState(true);
+  const [coords, setCoords] = useState({
+    latitude: 30.033333,
+    longitude: 31.233334,
+    latitudeDelta: 0.02,
+    longitudeDelta: 0.02,
+  });
+  const [savedCoords, setSavedCoords] = useState({
+    latitude: 30.033333,
+    longitude: 31.233334,
+  });
+  const [markarCoords, setMarkarCoords] = useState({
+    latitude: 30.033333,
+    longitude: 31.233334,
+  });
+
+  console.log(savedCoords, 'savedCoords');
+
+  const setInitCoords = (position: any) => {
+    setCoords(e => ({
+      ...e,
+      longitude: position.coords.longitude,
+      latitude: position.coords.latitude,
+    }));
+    setMarkarCoords({
+      longitude: position.coords.longitude,
+      latitude: position.coords.latitude,
+    });
+    setSavedCoords({
+      longitude: position.coords.longitude,
+      latitude: position.coords.latitude,
+    });
+  };
+
   const {mutate, isLoading} = useMutation(AddAddressHandler, {
     onError: (error: any) => {
       console.log(error?.response);
@@ -43,24 +82,71 @@ const AddAddress = () => {
   });
 
   const {handleChange, handleSubmit, handleBlur, values, errors} = useFormik({
-    initialValues: {name: '', address_name: '', lat: 1234, lng: 1234},
+    initialValues: {
+      name: '',
+      address_name: '',
+      lat: savedCoords.latitude,
+      lng: savedCoords.longitude,
+    },
     validationSchema: ShowEditAddressSchema,
     onSubmit: values => {
-      mutate(values);
+      mutate({
+        ...values,
+        lat: savedCoords.latitude,
+        lng: savedCoords.longitude,
+      });
     },
   });
+
+  const getMyLoction = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        setInitCoords(position);
+
+        setIsLoadingLoction(false);
+      },
+      error => {
+        // See error code charts below.
+        console.log(error.code, error.message);
+        showMessage({
+          type: 'danger',
+          message: error.message,
+        });
+        setIsLoadingLoction(false);
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    );
+  };
+  useEffect(() => {
+    getMyLoction();
+  }, []);
+  if (isLoadingLoction) return <Loading />;
+
   return (
     <Container>
       <Header title="إضافة عنوان جديد" />
       <MapView
-        initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
+        initialRegion={coords}
+        region={coords}
         style={{flex: 1}}
-      />
+        onRegionChangeComplete={e => {
+          setMarkarCoords(e);
+          setCoords(e);
+          setSavedCoords({latitude: e.latitude, longitude: e.longitude});
+        }}>
+        <Marker
+          coordinate={markarCoords}
+          draggable
+          onDragEnd={e => setSavedCoords(e.nativeEvent.coordinate)}>
+          <Image
+            source={EImages.pin}
+            style={css(({theme}) => ({
+              width: theme.pixel(100),
+              height: theme.pixel(100),
+            }))}
+          />
+        </Marker>
+      </MapView>
       <Form>
         <Input
           placeholder={t('Address Title')}
@@ -82,7 +168,7 @@ const AddAddress = () => {
             value={values.address_name}
             style={{width: '78%'}}
           />
-          <GetMyLoction>
+          <GetMyLoction onPress={getMyLoction}>
             <Location
               fill={theme.colors.main}
               width={pixel(60)}

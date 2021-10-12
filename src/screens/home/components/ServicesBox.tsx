@@ -19,7 +19,7 @@ const ServicesBox: FC<{isRow?: boolean; data: any}> = ({isRow, data}) => {
         <Image
           url={data.image}
           style={css`
-            width: ${sPixel(150)};
+            width: ${sPixel(130)};
             height: ${sPixel(100)};
           `}
         />
@@ -35,5 +35,5 @@ const ServicesBox: FC<{isRow?: boolean; data: any}> = ({isRow, data}) => {
 
 export default ServicesBox;
 const View = styled.View`
-  margin-${({theme}) => theme.right}: ${sPixel(27)};
+  margin-left: ${sPixel(27)};
 `;

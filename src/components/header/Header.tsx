@@ -17,7 +17,7 @@ const Header: FC<IHeader> = ({title, imageURL}) => {
       <Left onPress={goBack}>
         <ChevronLeft />
       </Left>
-      <Image style={image} source={imageURL} />
+      <Image style={image} url={imageURL} />
     </Container>
   );
 };

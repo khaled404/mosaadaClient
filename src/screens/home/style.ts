@@ -61,5 +61,5 @@ export const ServicesText = styled.Text`
 export const ServicesName = styled.Text`
   color: ${({theme}) => theme.colors.main};
   font-family: ${({theme}) => theme.fonts.bold};
-  font-size: ${sPixel(27)};
+  font-size: ${sPixel(25)};
 `;

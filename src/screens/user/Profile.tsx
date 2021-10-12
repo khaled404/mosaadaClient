@@ -202,7 +202,7 @@ const Profile = () => {
                   fill={theme.colors.main}
                   width={theme.pixel(45)}
                   height={theme.pixel(45)}
-                  style={theme.dir({marginLeft: 'auto'}, {marginRight: 'auto'})}
+                  style={{marginLeft: 'auto'}}
                 />
               </ChangePasswordContainer>
             </Content>

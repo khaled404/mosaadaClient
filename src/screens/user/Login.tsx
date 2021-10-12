@@ -40,6 +40,7 @@ const Login: FC = () => {
   const {login} = useAuth();
   const {mutate, isLoading, data} = useMutation(LoginHandler, {
     onError: (error: any) => {
+      console.log(error?.response);
       showMessage({
         message: error?.response?.data?.message,
         type: 'danger',

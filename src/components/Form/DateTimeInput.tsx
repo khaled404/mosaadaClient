@@ -93,11 +93,11 @@ const Container = styled.View`
 const DateAndTimeText = styled.Text`
   color: #b4b4d5;
   font-family: ${({theme}) => theme.fonts.regular};
-  font-size: ${({theme}) => theme.pixel(20)};
+  font-size: ${({theme}) => theme.pixel(17)};
 `;
 const Title = styled.Text`
   color: ${({theme}) => theme.colors.main};
   font-family: ${({theme}) => theme.fonts.bold};
-  font-size: ${({theme}) => theme.pixel(20)};
+  font-size: ${({theme}) => theme.pixel(19)};
   padding: 0 ${({theme}) => theme.pixel(15)};
 `;

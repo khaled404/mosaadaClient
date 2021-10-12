@@ -30,8 +30,9 @@ const Home: FC = () => {
           ) : (
             <>
               {data?.data?.services?.map((item: any, index: any) => {
-                if (index === 0) return <ServicesBox data={item} key={index} />;
-                return <ServicesBox isRow data={item} key={index} />;
+                if (index === 0)
+                  return <ServicesBox data={item} key={item.id} />;
+                return <ServicesBox isRow data={item} key={item.id} />;
               })}
             </>
           )}

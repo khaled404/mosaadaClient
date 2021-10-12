@@ -53,4 +53,5 @@ export default {
   'Deleted successfully': 'تم الحذف بنجاح',
   Add: 'إضافة',
   Send: 'إرسال',
+  'About service': 'عن الخدمة',
 };
