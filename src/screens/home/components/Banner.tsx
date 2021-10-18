@@ -45,7 +45,7 @@ const Banner: FC<IBanner> = ({isLoading, data}) => {
               theme.screenDimensions.width - theme.appPaddingHorizontal
             }
             autoplay={true}
-            loop
+            // loop
             autoplayDelay={400}
           />
         )}

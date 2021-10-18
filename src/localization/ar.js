@@ -55,4 +55,10 @@ export default {
   Send: 'إرسال',
   'About service': 'عن الخدمة',
   'Service details': 'تفاصيل الخدمة',
+  'L.E': 'جـ',
+  Location: 'الموقع',
+  'Service Appointment': 'موعد الخدمة',
+  'Service Location': 'موقع الخدمة',
+  'Choose / Add Address': 'اختيار / إضافة عنوان',
+  Confirmation: 'تأكيد الطلب',
 };

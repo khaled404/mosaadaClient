@@ -25,7 +25,9 @@ const BottomTabs: FC<any> = props => {
       {routes.map((item: {name: String}, i: number) => {
         const Icon = Tabs[item.name];
         return (
-          <TabContainer onPress={() => navigation.navigate(item.name)}>
+          <TabContainer
+            key={item.name}
+            onPress={() => navigation.navigate(item.name)}>
             <Icon
               fill={i === index ? theme.colors.main : '#b2b2bc'}
               width={pixel(40)}

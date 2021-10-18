@@ -3,13 +3,13 @@ import styled from 'styled-components/native';
 import {Title} from '../style';
 interface IInfoBox {
   title: String;
-  description: String;
+  description?: String;
 }
 const InfoBox: FC<IInfoBox> = ({title, description}) => {
   return (
     <Container>
       <Title>{title}</Title>
-      <Description>{description}</Description>
+      {description && <Description>{description}</Description>}
     </Container>
   );
 };

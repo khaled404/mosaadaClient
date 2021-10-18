@@ -23,7 +23,11 @@ const Input: FC<ITextInput> = props => {
       removeStyle={removeStyle}
       multiline={multiline}
       isEdit={isEdit}
-      style={style}>
+      style={{
+        ...style,
+
+        borderColor: errors[name] ? theme.colors.warning : '#f7f7fa',
+      }}>
       <IconContainer>
         <LeftContent
           fill={errors[name] ? theme.colors.warning : theme.colors.main}
@@ -62,6 +66,7 @@ const View = styled.View`
   flex-direction: row;
   align-items: center;
   margin-bottom: ${sPixel(45)};
+  borderWidth:  ${sPixel(2)};
 `}
 
   ${({multiline, theme}) =>

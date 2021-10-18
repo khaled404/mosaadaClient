@@ -7,6 +7,7 @@ import {DateTime} from 'luxon';
 import {I18nManager} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import Clock from '../../../assets/svg/Clock';
+import DownArrow from '../../../assets/svg/DownArrow';
 const {isRTL} = I18nManager;
 interface IDateInput {
   containerStyle?: string;
@@ -16,6 +17,7 @@ interface IDateInput {
   name: string;
   handleChange?: any;
   handleBlur?: any;
+  values?: any;
 }
 
 const DateInput: FC<IDateInput> = props => {
@@ -30,8 +32,9 @@ const DateInput: FC<IDateInput> = props => {
   };
   const DateFormta = () => {
     const day = DateTime.fromJSDate(dateTime).setLocale(isRTL ? 'ar' : 'en');
-    return `${day.weekdayShort} ${day.month} ${day.monthLong}`;
+    return `${day.weekdayShort} ${day.day} ${day.monthLong}`;
   };
+
   return (
     <Container>
       <Box
@@ -41,6 +44,7 @@ const DateInput: FC<IDateInput> = props => {
         <Calendar fill={theme.colors.main} />
         <Title>{t('Day')}</Title>
         <DateAndTimeText>{DateFormta()}</DateAndTimeText>
+        <DownArrow fill={theme.colors.main} width={15} height={15} />
       </Box>
       <Box
         onPress={() => {
@@ -53,6 +57,7 @@ const DateInput: FC<IDateInput> = props => {
             .setLocale(isRTL ? 'ar' : 'en')
             .toFormat('hh:mm a')}
         </DateAndTimeText>
+        <DownArrow fill={theme.colors.main} width={15} height={15} />
       </Box>
       {isActive && (
         <DateTimePicker
@@ -94,6 +99,7 @@ const DateAndTimeText = styled.Text`
   color: #b4b4d5;
   font-family: ${({theme}) => theme.fonts.regular};
   font-size: ${({theme}) => theme.pixel(17)};
+  margin-right: auto;
 `;
 const Title = styled.Text`
   color: ${({theme}) => theme.colors.main};

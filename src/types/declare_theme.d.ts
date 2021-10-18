@@ -29,7 +29,6 @@ declare module 'styled-components' {
     };
     fonts: {
       regular: string;
-      medium: string;
       black: string;
       bold: string;
       light: string;

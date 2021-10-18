@@ -13,6 +13,7 @@ import {ServicesTitle} from './style';
 const Home: FC = () => {
   const {t} = useTranslation();
   const {data, isLoading} = useQuery('GetHomeHandler', GetHomeHandler);
+
   return (
     <Container>
       <Header />
@@ -29,11 +30,13 @@ const Home: FC = () => {
             <ActivityIndicator size="large" color={theme.colors.main} />
           ) : (
             <>
-              {data?.data?.services?.map((item: any, index: any) => {
-                if (index === 0)
-                  return <ServicesBox data={item} key={item.id} />;
-                return <ServicesBox isRow data={item} key={item.id} />;
-              })}
+              {data?.data?.services?.map((item: any, index: any) => (
+                <ServicesBox
+                  isRow={item.col !== 12}
+                  data={item}
+                  key={item.id}
+                />
+              ))}
             </>
           )}
         </View>

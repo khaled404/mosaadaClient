@@ -28,7 +28,7 @@ const AddAddress = () => {
   const {t} = useTranslation();
   const {goBack} = useNavigation();
   const queryClient = useQueryClient();
-  const [isLoadingLoction, setIsLoadingLoction] = useState(true);
+  const [isLoadingLocation, setIsLoadingLocation] = useState(true);
   const [coords, setCoords] = useState({
     latitude: 30.033333,
     longitude: 31.233334,
@@ -96,12 +96,12 @@ const AddAddress = () => {
     },
   });
 
-  const getMyLoction = () => {
+  const getMyLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
         setInitCoords(position);
 
-        setIsLoadingLoction(false);
+        setIsLoadingLocation(false);
       },
       error => {
         // See error code charts below.
@@ -110,15 +110,15 @@ const AddAddress = () => {
           type: 'danger',
           message: error.message,
         });
-        setIsLoadingLoction(false);
+        setIsLoadingLocation(false);
       },
       {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
   };
   useEffect(() => {
-    getMyLoction();
+    getMyLocation();
   }, []);
-  if (isLoadingLoction) return <Loading />;
+  if (isLoadingLocation) return <Loading />;
 
   return (
     <Container>
@@ -166,13 +166,13 @@ const AddAddress = () => {
             value={values.address_name}
             style={{width: '78%'}}
           />
-          <GetMyLoction onPress={getMyLoction}>
+          <GetMyLocation onPress={getMyLocation}>
             <Location
               fill={theme.colors.main}
               width={pixel(60)}
               height={pixel(60)}
             />
-          </GetMyLoction>
+          </GetMyLocation>
         </Row>
         <Button
           title={t('Add')}
@@ -203,7 +203,7 @@ const Row = styled.View`
   justify-content: space-between;
 `;
 
-const GetMyLoction = styled.TouchableOpacity`
+const GetMyLocation = styled.TouchableOpacity`
   width: ${({theme}) => theme.pixel(115)};
   height: ${({theme}) => theme.pixel(115)};
   background-color: #f7f7fa;

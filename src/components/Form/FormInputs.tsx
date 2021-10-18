@@ -32,7 +32,7 @@ const FormInputs: FC<IForm> = props => {
         if (item.input_type === Inputs.Text) {
           return (
             <Input
-              key={item.id}
+              key={item.id + item.placeholder}
               placeholder={item.placeholder}
               errors={errors}
               name={item.id.toString()}
@@ -46,12 +46,13 @@ const FormInputs: FC<IForm> = props => {
         if (item.input_type === Inputs.Select) {
           return (
             <Select
-              key={item.id}
+              key={item.id + item.placeholder}
               placeholder={item.placeholder}
               errors={errors}
               name={item.id.toString()}
               handleChange={handleChange}
               handleBlur={handleBlur}
+              options={item.input_options}
               value={values[item.id.toString()]}
             />
           );
