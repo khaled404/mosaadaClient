@@ -36,7 +36,7 @@ export default function Services() {
     GetServiceHandler,
   );
   const [addressName, setAddressName, setName] = useAddressName();
-  const {handleChange, handleSubmit, handleBlur, values, errors} = useFormik({
+  const {handleChange, setValues, handleBlur, values, errors} = useFormik({
     initialValues: initialValues.values,
     enableReinitialize: true,
     valivalidationSchema: initialValues.yupSchema,
@@ -59,10 +59,11 @@ export default function Services() {
     setInitialValues({
       values: {
         ...initValues,
-        lat: '',
-        lng: '',
-        order_date: '',
-        order_time: '',
+        coords: {
+          lat: '',
+          lng: '',
+        },
+        date: new Date(),
         attr: [],
       },
       yupSchema,
@@ -83,8 +84,13 @@ export default function Services() {
     lng: 23.3333,
     attr: [1],
   };
-  console.log(values);
-
+  console.log(values, 'values');
+  const changeValue = (name: string, val: any) => {
+    setValues(e => ({
+      ...e,
+      [name]: val,
+    }));
+  };
   return (
     <>
       <Container
@@ -100,9 +106,10 @@ export default function Services() {
           />
           <InfoBox title={t('Service Appointment')} />
           <DateTimeInput
-            handleChange={handleChange}
+            handleChange={changeValue}
             values={values}
             errors={errors}
+            name="date"
           />
           {pageData.take_location === 1 && (
             <>
@@ -110,7 +117,8 @@ export default function Services() {
               <SelectLocation
                 values={values}
                 errors={errors}
-                handleChange={handleChange}
+                handleChange={changeValue}
+                name="coords"
                 handleBlur={handleBlur}
                 onPress={location.current?.open}
                 addressName={addressName}

@@ -27,6 +27,7 @@ const SelectLocation: FC<ISelectLocation> = ({
   name,
   addressName,
   setAddressName,
+  handleChange,
 }) => {
   const {t} = useTranslation();
   const [initCoords, setInitCoords] = useState<any>({
@@ -37,6 +38,7 @@ const SelectLocation: FC<ISelectLocation> = ({
   const getMyLocation = () => {
     Geolocation.getCurrentPosition(
       async ({coords}) => {
+        handleChange(name, {lat: coords.latitude, lng: coords.longitude});
         await setAddressName(coords.latitude, coords.longitude);
       },
       error => {

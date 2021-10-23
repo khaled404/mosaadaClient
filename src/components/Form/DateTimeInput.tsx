@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import styled from 'styled-components/native';
 import Calendar from '../../../assets/svg/Calendar';
@@ -21,7 +21,7 @@ interface IDateInput {
 }
 
 const DateInput: FC<IDateInput> = props => {
-  const {errors, name, handleChange = () => {}, handleBlur = () => {}} = props;
+  const {errors, name, handleChange, handleBlur} = props;
   const [isActive, setIsActive] = useState(false);
   const [dateTime, setDateTime] = useState(new Date());
   const [mode, setMode] = useState('date');
@@ -34,7 +34,10 @@ const DateInput: FC<IDateInput> = props => {
     const day = DateTime.fromJSDate(dateTime).setLocale(isRTL ? 'ar' : 'en');
     return `${day.weekdayShort} ${day.day} ${day.monthLong}`;
   };
-
+  useEffect(() => {
+    console.log(dateTime);
+    handleChange(name, dateTime);
+  }, [dateTime]);
   return (
     <Container>
       <Box
