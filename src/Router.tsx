@@ -22,6 +22,7 @@ import Policy from './screens/user/Policy';
 import About from './screens/user/About';
 import Address from './screens/address/Address';
 import AddAddress from './screens/address/AddAddress';
+import TenderMap from './screens/services/TenderMap';
 
 enableScreens();
 const Stack = createStackNavigator();
@@ -62,6 +63,7 @@ const Stacks: FC = () => {
       <Stack.Screen name="About" component={About} />
       <Stack.Screen name="Address" component={Address} />
       <Stack.Screen name="AddAddress" component={AddAddress} />
+      <Stack.Screen name="TenderMap" component={TenderMap} />
     </Stack.Navigator>
   );
 };

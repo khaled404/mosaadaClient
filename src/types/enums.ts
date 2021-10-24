@@ -13,4 +13,5 @@ export enum EImages {
   services2 = require(PATH + 'services2.png'),
   pin = require(PATH + 'pin.png'),
   loading = require(PATH + 'Mechanical.gif'),
+  worker = require(PATH + 'worker.png'),
 }

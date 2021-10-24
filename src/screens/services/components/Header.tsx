@@ -1,6 +1,5 @@
 import {useNavigation} from '@react-navigation/core';
 import React, {FC} from 'react';
-import {useTranslation} from 'react-i18next';
 import styled, {css} from 'styled-components/native';
 import ChevronLeft from '../../../../assets/svg/ChevronLeft';
 
@@ -9,11 +8,10 @@ interface IHeader {
 }
 const Header: FC<IHeader> = ({title}) => {
   const {goBack} = useNavigation();
-  const {t} = useTranslation();
   return (
     <Container>
       <Right></Right>
-      <Title>{t(title)}</Title>
+      <Title>{title}</Title>
       <Left onPress={goBack}>
         <ChevronLeft />
       </Left>

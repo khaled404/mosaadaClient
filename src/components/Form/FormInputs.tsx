@@ -10,6 +10,7 @@ interface IForm {
   errors?: any;
   handleChange?: any;
   handleBlur?: any;
+  changeValue?: any;
 }
 enum Inputs {
   Text = 'text',
@@ -23,6 +24,7 @@ const FormInputs: FC<IForm> = props => {
     values,
     handleChange = () => {},
     handleBlur = () => {},
+    changeValue = () => {},
   } = props;
   const {t} = useTranslation();
   return (
@@ -50,7 +52,7 @@ const FormInputs: FC<IForm> = props => {
               placeholder={item.placeholder}
               errors={errors}
               name={item.id.toString()}
-              handleChange={handleChange}
+              handleChange={changeValue}
               handleBlur={handleBlur}
               options={item.input_options}
               value={values[item.id.toString()]}

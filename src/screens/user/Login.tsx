@@ -38,7 +38,7 @@ const Login: FC = () => {
   const {reset, navigate} = useNavigation();
   const {t} = useTranslation();
   const {login} = useAuth();
-  const {mutate, isLoading, data} = useMutation(LoginHandler, {
+  const {mutate, isLoading, error} = useMutation(LoginHandler, {
     onError: (error: any) => {
       console.log(error?.response);
       showMessage({
@@ -52,6 +52,8 @@ const Login: FC = () => {
       });
     },
   });
+  console.log(error?.response);
+
   const {handleChange, handleSubmit, handleBlur, values, errors} = useFormik({
     initialValues: {email: '', password: ''},
     validationSchema: LoginSchema,

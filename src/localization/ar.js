@@ -61,4 +61,6 @@ export default {
   'Service Location': 'موقع الخدمة',
   'Choose / Add Address': 'اختيار / إضافة عنوان',
   Confirmation: 'تأكيد الطلب',
+  'Choose worker': 'اختيار عامل',
+  Choose: 'اختيار',
 };

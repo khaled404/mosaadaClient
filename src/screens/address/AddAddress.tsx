@@ -19,6 +19,7 @@ import Geolocation from 'react-native-geolocation-service';
 import Loading from '../../components/loading/Loading';
 import Image from '../../components/image/Image';
 import {EImages} from '../../types/enums';
+import useAddressName from '../../constants/useAddressName';
 
 const ShowEditAddressSchema = Yup.object().shape({
   name: Yup.string().min(2).required('Required'),
@@ -27,6 +28,8 @@ const ShowEditAddressSchema = Yup.object().shape({
 const AddAddress = () => {
   const {t} = useTranslation();
   const {goBack} = useNavigation();
+
+  const [name, setName] = useAddressName();
   const queryClient = useQueryClient();
   const [isLoadingLocation, setIsLoadingLocation] = useState(true);
   const [coords, setCoords] = useState({
@@ -79,28 +82,29 @@ const AddAddress = () => {
     },
   });
 
-  const {handleChange, handleSubmit, handleBlur, values, errors} = useFormik({
-    initialValues: {
-      name: '',
-      address_name: '',
-      lat: savedCoords.latitude,
-      lng: savedCoords.longitude,
-    },
-    validationSchema: ShowEditAddressSchema,
-    onSubmit: values => {
-      mutate({
-        ...values,
+  const {handleChange, handleSubmit, handleBlur, values, errors, setValues} =
+    useFormik({
+      initialValues: {
+        name: '',
+        address_name: '',
         lat: savedCoords.latitude,
         lng: savedCoords.longitude,
-      });
-    },
-  });
+      },
+      validationSchema: ShowEditAddressSchema,
+      onSubmit: values => {
+        mutate({
+          ...values,
+          lat: savedCoords.latitude,
+          lng: savedCoords.longitude,
+        });
+      },
+    });
 
   const getMyLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
         setInitCoords(position);
-
+        setName(position.coords.latitude, position.coords.longitude);
         setIsLoadingLocation(false);
       },
       error => {
@@ -118,11 +122,15 @@ const AddAddress = () => {
   useEffect(() => {
     getMyLocation();
   }, []);
+
+  useEffect(() => {
+    setValues(e => ({...e, name: name}));
+  }, [name]);
   if (isLoadingLocation) return <Loading />;
 
   return (
     <Container>
-      <Header title="إضافة عنوان جديد" />
+      <Header title="Add new ddress" />
       <MapView
         initialRegion={coords}
         region={coords}
