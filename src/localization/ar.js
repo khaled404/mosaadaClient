@@ -62,5 +62,12 @@ export default {
   'Choose / Add Address': 'اختيار / إضافة عنوان',
   Confirmation: 'تأكيد الطلب',
   'Choose worker': 'اختيار عامل',
-  Choose: 'اختيار',
+  Select: 'اختيار',
+  'Order has been sent successfully': 'تم ارسال الطلب بنجاح',
+  'In Progress': 'جارى الان',
+  Searching: 'جارى البحث',
+  Closed: 'ملغي',
+  'Order closed successfully': 'تم إغلاق الطلب بنجاح',
+  Cancel: 'الغاء',
+  'Order Details': 'تفاصيل الطلب',
 };

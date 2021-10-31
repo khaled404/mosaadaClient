@@ -1,70 +1,53 @@
-import {useFormik} from 'formik';
-import React, {useEffect, useState} from 'react';
-import Button from '../../components/button/Button';
+import React, {useEffect} from 'react';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import styled, {css} from 'styled-components/native';
 import {Container} from '../../globalStyle';
 import Header from './components/Header';
-import * as Yup from 'yup';
-import {showMessage} from 'react-native-flash-message';
-
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 import {useTranslation} from 'react-i18next';
-import Input from '../../components/Form/Input';
-import Location from '../../../assets/svg/Location';
-import {theme} from '../../constants/theme';
 import {pixel} from '../../constants/pixel';
 import {useNavigation, useRoute} from '@react-navigation/core';
-import Geolocation from 'react-native-geolocation-service';
 import Loading from '../../components/loading/Loading';
 import Image from '../../components/image/Image';
 import {EImages} from '../../types/enums';
-import {GetProvidersHandler} from './api';
-import {
-  Animated,
-  Dimensions,
-  ScrollView,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {GetProvidersHandler, NewOrderHandler} from './api';
+import {Animated, Dimensions, Platform} from 'react-native';
+import Star from '../../../assets/svg/Star';
+import {OpenUrlHandler} from '../../constants/helpers';
+import Phone from '../../../assets/svg/Phone';
+import {theme} from '../../constants/theme';
+import Button from '../../components/button/Button';
+import {showMessage} from 'react-native-flash-message';
 
-const ShowEditAddressSchema = Yup.object().shape({
-  name: Yup.string().min(2).required('Required'),
-  address_name: Yup.string().min(2).required('Required'),
-});
-
-const {width, height} = Dimensions.get('window');
-const CARD_HEIGHT = 220;
+const {width} = Dimensions.get('window');
 const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 const TenderMap = () => {
   const {t} = useTranslation();
-  const {goBack} = useNavigation();
-  const {params} = useRoute<{params: {id: number; body: any}}>();
-  console.log(params);
-
+  const {reset} = useNavigation();
+  const {params} = useRoute<{params: {body: any}}>();
+  const _map = React.useRef<any>(null);
+  const _scrollView = React.useRef<any>(null);
+  const mapAnimation = new Animated.Value(0);
+  let mapIndex = 0;
   const queryClient = useQueryClient();
-  const [isLoadingLocation, setIsLoadingLocation] = useState(true);
-  const [coords, setCoords] = useState({
-    latitude: 30.033333,
-    longitude: 31.233334,
-    latitudeDelta: 0.02,
-    longitudeDelta: 0.02,
-  });
-  const [savedCoords, setSavedCoords] = useState({
-    latitude: 30.033333,
-    longitude: 31.233334,
-  });
-  const [markarCoords, setMarkarCoords] = useState({
-    latitude: 30.033333,
-    longitude: 31.233334,
-  });
+  const {isLoading, data, error} = useQuery(
+    [
+      'GetProvidersHandler',
+      {
+        id: params.body.services_id,
+        body: {
+          lat: params.body.lat,
+          lng: params.body.lng,
+          attr: params.body.attr,
+        },
+      },
+    ],
+    GetProvidersHandler,
+  );
 
-  const {mutate} = useMutation(() => {}, {
+  const newOrderMutation = useMutation(NewOrderHandler, {
     onError: (error: any) => {
       console.log(error?.response);
 
@@ -75,124 +58,28 @@ const TenderMap = () => {
     },
     onSuccess: data => {
       showMessage({
-        message: t('Added successfully'),
+        message: t('Order has been sent successfully'),
         type: 'success',
       });
-      queryClient.refetchQueries('GetAddressHandler');
-      goBack();
+      reset({index: 1, routes: [{name: 'Home'}]});
+      queryClient.refetchQueries('Orders');
     },
   });
-
-  const {handleChange, handleSubmit, handleBlur, values, errors} = useFormik({
-    initialValues: {
-      name: '',
-      address_name: '',
-      lat: savedCoords.latitude,
-      lng: savedCoords.longitude,
-    },
-    validationSchema: ShowEditAddressSchema,
-    onSubmit: values => {
-      mutate({
-        ...values,
-        lat: savedCoords.latitude,
-        lng: savedCoords.longitude,
-      });
-    },
-  });
-  const isLoading = false;
-  const data = {
-    data: [
-      {
-        id: 2,
-        name: 'eslamdd',
-        email: 'ddd@esslam.com',
-        phone: '01025361807',
-        avatar:
-          'https://www.gravatar.com/avatar/57871448f11aaac34766a68d9bf27061',
-        api_token:
-          'z7l0S5ycvvUepDX1YQVKytg73MtFFggifn7Wvwla9kKadhYqQnWTk29vWLLg',
-        active: 1,
-        user_type: 'provider',
-        wallet: 0,
-        provider_address: '',
-        provider_lat: 32.55550000000000210320649784989655017852783203125,
-        provider_lng: 23.33330000000000126192389870993793010711669921875,
-        services_support: [
-          {
-            id: 1,
-            title: 'ونش',
-            col: 12,
-            sort: 1,
-            take_location: 1,
-            tender: true,
-            image:
-              'https://mosaada.mih-med.com/uploads/services/163394329081742.png',
-          },
-        ],
-      },
-
-      {
-        id: 3,
-        name: 'eslamdd 2',
-        email: 'ddd@esslam.com',
-        phone: '01025361807',
-        avatar:
-          'https://www.gravatar.com/avatar/57871448f11aaac34766a68d9bf27061',
-        api_token:
-          'z7l0S5ycvvUepDX1YQVKytg73MtFFggifn7Wvwla9kKadhYqQnWTk29vWLLg',
-        active: 1,
-        user_type: 'provider',
-        wallet: 0,
-        provider_address: '',
-        provider_lat: 32.53550000000000210320649784989655017852783203125,
-        provider_lng: 23.33330000000000126192389870993793010711669921875,
-        services_support: [
-          {
-            id: 1,
-            title: 'ونش',
-            col: 12,
-            sort: 1,
-            take_location: 1,
-            tender: true,
-            image:
-              'https://mosaada.mih-med.com/uploads/services/163394329081742.png',
-          },
-        ],
-      },
-    ],
-  };
-
-  // const {isLoading, data, error} = useQuery(
-  //   [
-  //     'GetProvidersHandler',
-  //     {
-  //       id: params.id,
-  //       body: {
-  //         // lat: params.body.lat,
-  //         // lng: params.body.lng,
-  //         lat: 32.5555,
-  //         lng: 23.3333,
-
-  //         attr: [1, 3],
-  //       },
-  //     },
-  //   ],
-  //   GetProvidersHandler,
-  //   {retry: false},
-  // );
-  console.log(data);
-  const _map = React.useRef(null);
-  const _scrollView = React.useRef(null);
-
-  let mapIndex = 0;
-  let mapAnimation = new Animated.Value(0);
 
   useEffect(() => {
-    if (data?.data) {
+    if (data?.data?.length !== 0 && _scrollView.current) {
+      setTimeout(() => {
+        onMarkerPress(data?.data?.length);
+      }, 500);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (data?.data?.length !== 0) {
       mapAnimation.addListener(({value}) => {
-        let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
-        if (index >= data.data.length) {
-          index = data.data.length - 1;
+        let index = Math.floor(value / CARD_WIDTH + 0.3);
+        if (index >= data?.data?.length) {
+          index = data?.data?.length - 1;
         }
         if (index <= 0) {
           index = 0;
@@ -201,7 +88,7 @@ const TenderMap = () => {
         const regionTimeout = () => {
           if (mapIndex !== index) {
             mapIndex = index;
-            const coordinate = data.data[index];
+            const coordinate = data?.data[index];
             _map.current.animateToRegion(
               {
                 latitude: coordinate.provider_lat,
@@ -219,7 +106,7 @@ const TenderMap = () => {
     }
   });
 
-  const onMarkerPress = markerID => {
+  const onMarkerPress = (markerID: any) => {
     let x = markerID * CARD_WIDTH + markerID * 20;
     if (Platform.OS === 'ios') {
       x = x - SPACING_FOR_CARD_INSET;
@@ -229,7 +116,7 @@ const TenderMap = () => {
   };
   if (isLoading) return <Loading />;
 
-  const interpolations = data.data.map((marker, index) => {
+  const interpolations = data?.data?.map((marker: any, index: any) => {
     const inputRange = [
       (index - 1) * CARD_WIDTH,
       index * CARD_WIDTH,
@@ -244,22 +131,35 @@ const TenderMap = () => {
 
     return {scale};
   });
+  console.log(data, error?.response);
 
   return (
     <Container>
       <Header title={t('Choose worker')} />
-
       <MapView
         ref={_map}
         initialRegion={{
-          latitude: 32.5555,
-          longitude: 23.3333,
+          latitude: params.body.lat,
+          longitude: params.body.lng,
           latitudeDelta: 0.02,
           longitudeDelta: 0.02,
         }}
         style={{flex: 1}}
         provider={PROVIDER_GOOGLE}>
-        {data.data.map((marker, index) => {
+        <Marker
+          coordinate={{
+            latitude: params.body.lat,
+            longitude: params.body.lng,
+          }}>
+          <Image
+            source={EImages.pin}
+            style={css(({theme}) => ({
+              width: theme.pixel(100),
+              height: theme.pixel(100),
+            }))}
+          />
+        </Marker>
+        {data?.data?.map((marker: any, index: any) => {
           const scaleStyle = {
             transform: [
               {
@@ -275,7 +175,16 @@ const TenderMap = () => {
                 longitude: marker.provider_lng,
               }}
               onPress={e => onMarkerPress(index)}>
-              <Animated.View style={[styles.markerWrap, scaleStyle]}>
+              <Animated.View
+                style={[
+                  {
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: pixel(110),
+                    height: pixel(110),
+                  },
+                  scaleStyle,
+                ]}>
                 <Image
                   source={EImages.worker}
                   style={css(({theme}) => ({
@@ -297,7 +206,13 @@ const TenderMap = () => {
         showsHorizontalScrollIndicator={false}
         snapToInterval={CARD_WIDTH + 20}
         snapToAlignment="center"
-        style={styles.scrollView}
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          paddingVertical: 10,
+        }}
         contentInset={{
           top: 0,
           left: SPACING_FOR_CARD_INSET,
@@ -305,6 +220,7 @@ const TenderMap = () => {
           right: SPACING_FOR_CARD_INSET,
         }}
         contentContainerStyle={{
+          paddingVertical: pixel(20),
           paddingHorizontal:
             Platform.OS === 'android' ? SPACING_FOR_CARD_INSET : 0,
         }}
@@ -320,86 +236,134 @@ const TenderMap = () => {
           ],
           {useNativeDriver: true},
         )}>
-        {data.data.map((marker, index) => (
-          <View style={styles.card} key={marker.id}></View>
+        {data?.data?.map((item: any) => (
+          <Card key={item.id}>
+            {item?.services_support?.map((service: any) => (
+              <Row key={service.id}>
+                <View style={{paddingTop: 5}}>
+                  <Image
+                    url={service.image}
+                    style={css(({theme}) => ({
+                      width: theme.pixel(100),
+                      height: theme.pixel(100),
+                      borderRadius: 12,
+                      overflow: 'hidden',
+                    }))}
+                  />
+                </View>
+
+                <Text>{service.title}</Text>
+              </Row>
+            ))}
+
+            <Row style={{marginBottom: pixel(10)}}>
+              <View>
+                <Image
+                  url={item.avatar}
+                  style={css(({theme}) => ({
+                    width: theme.pixel(100),
+                    height: theme.pixel(100),
+                    borderRadius: 12,
+                    overflow: 'hidden',
+                  }))}
+                />
+              </View>
+              <Row style={{flex: 1}}>
+                <View style={{marginRight: 'auto'}}>
+                  <Text>{item.name}</Text>
+                  <Row>
+                    {[...Array(5).keys()].map(index => (
+                      <Star
+                        key={index}
+                        fill={index < item.rate ? '#F8B61C' : '#dae1e9'}
+                        width={pixel(25)}
+                        height={pixel(25)}
+                        style={{marginRight: 3}}
+                      />
+                    ))}
+                  </Row>
+                  <Price>
+                    {data.more_information.price} {t('L.E')}
+                  </Price>
+                </View>
+                {/* <IconContainer
+                  onPress={() => {
+                    OpenUrlHandler(`tel:${item?.phone}`);
+                  }}>
+                  <Phone
+                    fill={theme.colors.main}
+                    width={theme.pixel(40)}
+                    height={theme.pixel(40)}
+                  />
+                </IconContainer> */}
+              </Row>
+            </Row>
+
+            <Button
+              title={t('Select')}
+              onPress={() => {
+                newOrderMutation.mutate({...params.body, provider_id: item.id});
+              }}
+              isLoading={newOrderMutation.isLoading}
+              style={css`
+                width: 50%;
+                text-align: center;
+                margin: auto auto ${({theme}) => theme.pixel(25)};
+              `}
+            />
+          </Card>
         ))}
       </Animated.ScrollView>
-
-      {/* <MapView
-        initialRegion={{
-          latitude: 32.5555,
-          longitude: 23.3333,
-          latitudeDelta: 0.02,
-          longitudeDelta: 0.02,
-        }}
-        style={{flex: 1}}>
-        <Marker
-          coordinate={{
-            latitude: 32.2555,
-            longitude: 23.2333,
-          }}>
-          <Image
-            source={EImages.pin}
-            style={css(({theme}) => ({
-              width: theme.pixel(100),
-              height: theme.pixel(100),
-            }))}
-          />
-        </Marker>
-
-        {data.data.map(item => (
-          <Marker
-            coordinate={{
-              latitude: item.provider_lat,
-              longitude: item.provider_lng,
-            }}>
-            <Image
-              source={EImages.worker}
-              style={css(({theme}) => ({
-                width: theme.pixel(120),
-                height: theme.pixel(120),
-              }))}
-            />
-          </Marker>
-        ))}
-      </MapView> */}
     </Container>
   );
 };
 
 export default TenderMap;
 
-const styles = StyleSheet.create({
-  scrollView: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingVertical: 10,
-  },
-  markerWrap: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: pixel(110),
-    height: pixel(110),
-  },
-  marker: {
-    width: pixel(110),
-    height: pixel(110),
-  },
+const Card = styled.View(({theme}) => ({
+  elevation: 2,
+  backgroundColor: '#FFF',
+  borderRadius: theme.pixel(40),
+  marginHorizontal: 10,
+  shadowColor: '#000',
+  shadowRadius: 5,
+  shadowOpacity: 0.3,
+  shadowOffset: {x: 2, y: -2},
+  width: CARD_WIDTH,
+  overflow: 'hidden',
+}));
 
-  card: {
-    elevation: 2,
-    backgroundColor: '#FFF',
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
-    marginHorizontal: 10,
-    shadowColor: '#000',
-    shadowRadius: 5,
-    shadowOpacity: 0.3,
-    shadowOffset: {x: 2, y: -2},
-    height: CARD_HEIGHT,
-    width: CARD_WIDTH,
-    overflow: 'hidden',
-  },
-});
+const View = styled.View(({theme}) => ({
+  paddingTop: theme.pixel(30),
+  paddingLeft: theme.pixel(20),
+  paddingRight: theme.pixel(20),
+}));
+
+const Text = styled.Text(({theme}) => ({
+  fontFamily: theme.fonts.bold,
+  fontSize: theme.pixel(30),
+  color: theme.colors.main,
+  textAlign: 'left',
+}));
+
+const Row = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+const IconContainer = styled.TouchableOpacity`
+  width: ${({theme}) => theme.pixel(70)};
+  height: ${({theme}) => theme.pixel(70)};
+  background-color: #f7f7fa;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  margin-right: ${({theme}) => theme.pixel(20)};
+`;
+
+const Price = styled.Text`
+  margin-right: auto;
+  padding: ${({theme}) => theme.pixel(10)} ${({theme}) => theme.pixel(20)};
+  font-family: ${({theme}) => theme.fonts.bold};
+  color: ${({theme}) => theme.colors.grayMain};
+  font-size: ${({theme}) => theme.pixel(25)};
+`;

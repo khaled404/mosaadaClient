@@ -37,7 +37,6 @@ const RegisterStep2: FC = () => {
   const {login} = useAuth();
   const {mutate, isLoading} = useMutation(RegisterHandler, {
     onError: (error: any) => {
-      console.log(error?.response);
       if (error?.response?.data.errors.length !== 0) {
         showMessage({
           message: error?.response?.data?.errors

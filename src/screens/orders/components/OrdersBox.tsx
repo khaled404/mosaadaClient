@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {FC} from 'react';
+
 import {useTranslation} from 'react-i18next';
 import {View} from 'react-native';
 import styled, {css} from 'styled-components/native';
@@ -10,84 +11,208 @@ import Image from '../../../components/image/Image';
 import {theme} from '../../../constants/theme';
 import {EImages} from '../../../types/enums';
 import {pixel} from '../../../constants/pixel';
+import InProgress from '../../../../assets/svg/InProgress';
+import Search from '../../../../assets/svg/Search';
+import {returnStatus} from '../../../constants/helpers';
+import Close from '../../../../assets/svg/Close';
+import {useMutation} from 'react-query';
+import {closeOrderHandler} from '../api';
+import {showMessage} from 'react-native-flash-message';
+import Button from '../../../components/button/Button';
+import {useNavigation} from '@react-navigation/native';
 
-const OrdersBox = () => {
+interface IOrdersBox {
+  item: {
+    id: number;
+    total: number;
+    provider: Array<any>;
+    status: string;
+    order_date: string;
+    order_time: string;
+    services: {
+      title: string;
+      image: string;
+    };
+    tenders: {
+      consent: Array<any>;
+      offers: Array<any>;
+    };
+  };
+}
+
+const OrdersBox: FC<IOrdersBox> = ({item}) => {
   const {t} = useTranslation();
-  return (
-    <Container>
-      <Left>
-        <ServicesBox>
-          <Image
-            source={EImages.services2}
-            style={css`
-              width: ${({theme}) => theme.pixel(140)};
-              height: ${({theme}) => theme.pixel(140)};
-            `}
-          />
-          <View style={{paddingLeft: 10}}>
-            <ServicesText>{t('Service')}</ServicesText>
-            <ServicesName>غسيل</ServicesName>
-          </View>
-        </ServicesBox>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
-          <DateContainer>
-            <CalendarSm fill={theme.colors.main} />
-            <DateText>الأحد 8 مايو</DateText>
-          </DateContainer>
-          <DateContainer>
-            <ClockSm fill={theme.colors.main} />
-            <DateText>10:30 م</DateText>
-          </DateContainer>
-        </View>
-        <View style={{flexDirection: 'row', paddingTop: 10}}>
-          <MapPin
-            width={pixel(30)}
-            height={pixel(30)}
-            fill={theme.colors.main}
-          />
-          <MapText>{t('Starting Location')}</MapText>
-          <LocationText>الموقع الحالي</LocationText>
-        </View>
-        <View style={{flexDirection: 'row', paddingTop: 10}}>
-          <MapPin
-            width={pixel(30)}
-            height={pixel(30)}
-            fill={theme.colors.main}
-          />
-          <MapText>{t('Arrival Location')}</MapText>
-          <LocationText>المنزل شارع الشفعى - ميت غمر</LocationText>
-        </View>
-      </Left>
-      <Right>
-        <StatusText>
-          <SuccessIcon />
-          <SuccessText>{t('Finished Service')}</SuccessText>
-        </StatusText>
+  const {navigate} = useNavigation();
+  const closeMutate = useMutation(closeOrderHandler, {
+    onError: (error: any) => {
+      console.log(error?.response, 'Error');
+      showMessage({
+        message: error?.response?.data?.message,
+        type: 'danger',
+      });
+    },
+    onSuccess: data => {
+      showMessage({
+        message: t('Order closed successfully'),
+        type: 'success',
+      });
+    },
+  });
+  const Status = () => {
+    const Icon = returnStatus(
+      item.status,
+      InProgress,
+      Search,
+      Close,
+      SuccessIcon,
+    );
+    const color = returnStatus(
+      item.status,
+      theme.colors.yellow,
+      theme.colors.grayMain,
+      theme.colors.warning,
+      theme.colors.success,
+    );
 
-        <Amount>50</Amount>
-        <Currency>{t('EGP')}</Currency>
-      </Right>
+    return (
+      <StatusText>
+        <Icon />
+        <SuccessText style={{color}}>
+          {t(
+            returnStatus(
+              item.status,
+              'In Progress',
+              'Searching',
+              'Closed',
+              'Finished Service',
+            ),
+          )}
+        </SuccessText>
+      </StatusText>
+    );
+  };
+  return (
+    <Container
+      onPress={() => {
+        navigate('OrderDetails', {id: item.id});
+      }}>
+      <Row>
+        <Left>
+          <ServicesBox>
+            <Image
+              url={item.services.image}
+              style={css`
+                width: ${({theme}) => theme.pixel(140)};
+                height: ${({theme}) => theme.pixel(140)};
+              `}
+            />
+            <View style={{paddingLeft: 10}}>
+              <ServicesText>{t('Service')}</ServicesText>
+              <ServicesName>{item.services.title}</ServicesName>
+            </View>
+          </ServicesBox>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <DateContainer>
+              <CalendarSm fill={theme.colors.main} />
+              <DateText>الأحد 8 مايو</DateText>
+            </DateContainer>
+            <DateContainer>
+              <ClockSm fill={theme.colors.main} />
+              <DateText>10:30 م</DateText>
+            </DateContainer>
+          </View>
+          <View style={{flexDirection: 'row', paddingTop: 10}}>
+            <MapPin
+              width={pixel(30)}
+              height={pixel(30)}
+              fill={theme.colors.main}
+            />
+            <MapText>{t('Starting Location')}</MapText>
+            <LocationText>الموقع الحالي</LocationText>
+          </View>
+          <View style={{flexDirection: 'row', paddingTop: 10}}>
+            <MapPin
+              width={pixel(30)}
+              height={pixel(30)}
+              fill={theme.colors.main}
+            />
+            <MapText>{t('Arrival Location')}</MapText>
+            <LocationText>المنزل شارع الشفعى - ميت غمر</LocationText>
+          </View>
+        </Left>
+        <Right>
+          {Status()}
+          <Amount>{item.total}</Amount>
+          <Currency>{t('EGP')}</Currency>
+        </Right>
+      </Row>
+      {/* {returnStatus(
+        item.status,
+        <Button
+          title="Cancel"
+          style={css(({theme}) => ({
+            marginTop: theme.pixel(25),
+            backgroundColor: theme.colors.main,
+            width: '50%',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+          }))}
+          isLoading={closeMutate.isLoading}
+          onPress={() => {
+            closeMutate.mutate(item.id);
+          }}
+        />,
+        <Button
+          title="Cancel"
+          style={css(({theme}) => ({
+            marginTop: theme.pixel(25),
+            backgroundColor: theme.colors.main,
+            width: '50%',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+          }))}
+          isLoading={closeMutate.isLoading}
+          onPress={() => {
+            closeMutate.mutate(item.id);
+          }}
+        />,
+        <></>,
+        <></>,
+      )} */}
     </Container>
   );
 };
 
+{
+  /* <Button
+title="Close"
+isLoading={closeMutate.isLoading}
+onPress={() => {
+  closeMutate.mutate(item.id);
+}}
+/> */
+}
+
 export default OrdersBox;
 
 const Container = styled.TouchableOpacity`
-  flex-direction: row;
-  width: 100%;
-  margin-bottom: ${({theme}) => theme.pixel(40)};
-  align-items: center;
-  justify-content: space-between;
   background-color: #fff;
   border: solid 1px rgba(112, 112, 112, 0.08);
   padding: ${({theme}) => theme.pixel(25)} 0 ${({theme}) => theme.pixel(20)}
     ${({theme}) => theme.pixel(25)};
   border-radius: 20px;
+  margin-bottom: ${({theme}) => theme.pixel(40)};
+`;
+
+const Row = styled.View`
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
 `;
 const Left = styled.View`
   flex: 0.6;
@@ -100,7 +225,7 @@ const Right = styled.View`
 `;
 const Amount = styled.Text(({theme}) => ({
   fontFamily: theme.fonts.bold,
-  fontSize: theme.pixel(70),
+  fontSize: theme.pixel(50),
   color: theme.colors.main,
 }));
 const Currency = styled.Text(({theme}) => ({

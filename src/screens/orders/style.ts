@@ -4,6 +4,8 @@ export const OrdersContainer = styled.View`
   height: 85%;
   position: absolute;
   bottom: 0;
+
+  width: 100%;
 `;
 
 export const OrdersScroll = styled.FlatList.attrs((props: any) => ({

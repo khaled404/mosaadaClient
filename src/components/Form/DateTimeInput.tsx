@@ -35,7 +35,6 @@ const DateInput: FC<IDateInput> = props => {
     return `${day.weekdayShort} ${day.day} ${day.monthLong}`;
   };
   useEffect(() => {
-    console.log(dateTime);
     handleChange(name, dateTime);
   }, [dateTime]);
   return (

@@ -23,6 +23,7 @@ import About from './screens/user/About';
 import Address from './screens/address/Address';
 import AddAddress from './screens/address/AddAddress';
 import TenderMap from './screens/services/TenderMap';
+import OrderDetails from './screens/orders/OrderDetails';
 
 enableScreens();
 const Stack = createStackNavigator();
@@ -64,6 +65,7 @@ const Stacks: FC = () => {
       <Stack.Screen name="Address" component={Address} />
       <Stack.Screen name="AddAddress" component={AddAddress} />
       <Stack.Screen name="TenderMap" component={TenderMap} />
+      <Stack.Screen name="OrderDetails" component={OrderDetails} />
     </Stack.Navigator>
   );
 };

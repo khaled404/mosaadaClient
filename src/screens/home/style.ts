@@ -45,7 +45,7 @@ export const ServicesContainer = styled.TouchableOpacity`
   flex-direction: row;
   width: ${({isRow}: any) => (isRow ? '48%' : '100%')};
   background-color: #fff;
-  padding: ${sPixel(14)};
+  padding: ${sPixel(10)};
   justify-content: flex-start;
   border-radius: 13px;
   margin-bottom: ${sPixel(30)};
@@ -55,11 +55,11 @@ export const ServicesText = styled.Text`
   color: ${({theme}) => theme.colors.main};
   font-family: ${({theme}) => theme.fonts.regular};
   margin-bottom: ${sPixel(15)};
-  font-size: ${sPixel(20)};
+  font-size: ${sPixel(18)};
 `;
 
 export const ServicesName = styled.Text`
   color: ${({theme}) => theme.colors.main};
   font-family: ${({theme}) => theme.fonts.bold};
-  font-size: ${sPixel(25)};
+  font-size: ${sPixel(20)};
 `;

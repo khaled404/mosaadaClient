@@ -26,6 +26,7 @@ declare module 'styled-components' {
       success: string;
       warning: string;
       grayMain: string;
+      yellow: string;
     };
     fonts: {
       regular: string;

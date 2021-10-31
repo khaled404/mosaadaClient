@@ -3,8 +3,8 @@ import Header from '../../components/header/Header';
 import {Container, Content} from '../../globalStyle';
 import InfoBox from './components/InfoBox';
 import DateTimeInput from '../../components/Form/DateTimeInput';
-import {useQuery} from 'react-query';
-import {GetServiceHandler} from './api';
+import {useMutation, useQuery, useQueryClient} from 'react-query';
+import {GetServiceHandler, NewOrderHandler} from './api';
 import {useNavigation, useRoute} from '@react-navigation/core';
 import Loading from '../../components/loading/Loading';
 import {useTranslation} from 'react-i18next';
@@ -20,13 +20,16 @@ import ServiceLocationBox from './components/ServiceLocationBox';
 import AddressBox from './components/AddressBox';
 import Button from '../../components/button/Button';
 import {DateTime} from 'luxon';
+import {showMessage} from 'react-native-flash-message';
 
 type tParams = {params: {servicesId: number}};
 export default function Services() {
   const {t} = useTranslation();
   const location = useRef<Modalize>();
   const {params}: tParams = useRoute();
-  const {navigate} = useNavigation();
+  const {navigate, reset} = useNavigation();
+  const queryClient = useQueryClient();
+
   const [initialValues, setInitialValues] = useState({
     values: {},
     yupSchema: {
@@ -48,6 +51,26 @@ export default function Services() {
     ['GetServiceHandler', params.servicesId],
     GetServiceHandler,
   );
+
+  const newOrderMutation = useMutation(NewOrderHandler, {
+    onError: (error: any) => {
+      console.log(error?.response);
+
+      showMessage({
+        message: error?.response?.data?.message,
+        type: 'danger',
+      });
+    },
+    onSuccess: data => {
+      showMessage({
+        message: t('Order has been sent successfully'),
+        type: 'success',
+      });
+      reset({index: 1, routes: [{name: 'Home'}]});
+      queryClient.refetchQueries('Orders');
+    },
+  });
+
   const [addressName, setAddressName, setName] = useAddressName();
   const {handleChange, setValues, handleBlur, values, errors, handleSubmit} =
     useFormik({
@@ -55,34 +78,40 @@ export default function Services() {
       enableReinitialize: true,
       valivalidationSchema: initialValues.yupSchema,
 
-      onSubmit: values => {
+      onSubmit: (values: any) => {
         const date = DateTime.fromJSDate(values?.date);
         const formatDate = `${date.day}-${date.month}-${date.year}`;
-        const formatTime = `${date.hour}:${date.minute}`;
+        const formatTime = `${date.hour}:${
+          date.minute < 10 ? date.minute + '0' : date.minute
+        }`;
         const newAttr = [];
         const arrayOfKeys = Object.keys(values);
 
         for (let index = 0; index < arrayOfKeys.length; index++) {
           const element = arrayOfKeys[index];
-          console.log('NaN');
+
           if (!isNaN(+element)) {
             newAttr.push(values[element]);
           }
         }
-        console.log(values);
 
         const body = {
           order_date: formatDate,
           order_time: formatTime,
-          lat: values.coords?.lat,
-          lng: values.coords?.lng,
-          attr: newAttr,
+          lat: values?.coords?.lat,
+          lng: values?.coords?.lng,
+          attr: newAttr.filter(e => e !== ''),
           services_id: params.servicesId,
+          address_name: addressName,
+          arrival_location_name: addressName,
+          arrival_location_lat: values?.coords?.lat,
+          arrival_location_lng: values?.coords?.lng,
         };
 
-        if (data?.data?.tender) {
-          return navigate('TenderMap', {id: params.servicesId, body: body});
+        if (!data?.data?.tender) {
+          return navigate('TenderMap', {body: body});
         }
+        newOrderMutation.mutate(body);
       },
     });
 
@@ -145,21 +174,19 @@ export default function Services() {
             errors={errors}
             name="date"
           />
-          {pageData.take_location === 1 && (
-            <>
-              <InfoBox title={t('Service Location')} />
-              <SelectLocation
-                values={values}
-                errors={errors}
-                handleChange={changeValue}
-                name="coords"
-                handleBlur={handleBlur}
-                onPress={location.current?.open}
-                addressName={addressName}
-                setAddressName={setAddressName}
-              />
-            </>
-          )}
+
+          <InfoBox title={t('Service Location')} />
+          <SelectLocation
+            values={values}
+            errors={errors}
+            handleChange={changeValue}
+            name="coords"
+            handleBlur={handleBlur}
+            onPress={location.current?.open}
+            addressName={addressName}
+            setAddressName={setAddressName}
+          />
+
           <FormInputs
             data={pageData.inputs}
             values={values}
@@ -173,6 +200,7 @@ export default function Services() {
           title="Confirmation"
           style={{width: '50%', margin: 'auto'}}
           onPress={handleSubmit}
+          isLoading={newOrderMutation.isLoading}
         />
       </Container>
 

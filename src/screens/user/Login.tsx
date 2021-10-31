@@ -52,7 +52,6 @@ const Login: FC = () => {
       });
     },
   });
-  console.log(error?.response);
 
   const {handleChange, handleSubmit, handleBlur, values, errors} = useFormik({
     initialValues: {email: '', password: ''},

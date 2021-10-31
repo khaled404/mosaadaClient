@@ -46,8 +46,6 @@ const Profile = () => {
   const [isEdit, setisEdit] = useState(false);
   const editUserMutation = useMutation(EditUserHandler, {
     onError: (error: any) => {
-      console.log(error?.response?.data);
-
       showMessage({
         message: error?.response?.data?.errors
           .map((item: any) => item.value)

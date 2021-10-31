@@ -28,10 +28,10 @@ export const theme: DefaultTheme = {
     text: '#b4b4d5',
     success: '#27ae60',
     warning: '#FE586A',
+    yellow: '#ffb800',
   },
   fonts: {
     regular: 'NeoRegular',
-    medium: 'NeoMedium',
     black: 'NeoBlack',
     bold: 'NeoBold',
     light: 'NeoLight',

@@ -63,3 +63,24 @@ export const OpenUrlHandler = async (url: string): Promise<void> => {
     });
   }
 };
+
+export const returnStatus = (
+  status: any,
+  progress: any,
+  research: any,
+  close: any,
+  defaultItem: any,
+) => {
+  switch (status) {
+    case 'in_process':
+      return progress;
+    case 'research':
+      return research;
+    case 'research':
+      return research;
+    case 'close':
+      return close;
+    default:
+      return defaultItem;
+  }
+};

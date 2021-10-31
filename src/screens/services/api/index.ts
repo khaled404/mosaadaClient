@@ -13,3 +13,8 @@ export const GetProvidersHandler = async ({queryKey}: query) => {
   );
   return data;
 };
+
+export const NewOrderHandler = async (body: any) => {
+  const {data} = await Axios.post('order', body);
+  return data;
+};
